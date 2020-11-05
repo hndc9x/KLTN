@@ -6,7 +6,8 @@ const app = express();
 
 
 //route
-const usereRoutes = require('./routes/user');
+const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin/auth');
 
 
 // cài đặt môi trường env
@@ -29,7 +30,8 @@ const connectDB = async()=>{
 connectDB()
 
 app.use(bodyParser());
-app.use('/api',usereRoutes);
+app.use('/api',authRoutes);
+app.use('/api',adminRoutes);
 
 
 app.listen(process.env.PORT,()=>{
