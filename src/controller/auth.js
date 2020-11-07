@@ -14,7 +14,7 @@ exports.signup =(req,res) =>{
             email,
             password
         }= req.body;
-        const _user = new User({firstName,lastName,email,password,username:Math.random().toString(),role:'admin'});
+        const _user = new User({firstName,lastName,email,password,username:Math.random().toString(),role:'user'});
         _user.save((error,data)=>{
             if(error){
                 return res.status(400).json({
