@@ -1,6 +1,5 @@
 const express = require('express');
 const env = require('dotenv');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
 
@@ -8,6 +7,7 @@ const app = express();
 //route
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
+const categoryRoutes = require('./routes/category');
 
 
 // cài đặt môi trường env
@@ -27,11 +27,12 @@ const connectDB = async()=>{
     console.log(`MongoDB Connected: ${connection.connection.host}`)
 
 }
-connectDB()
+connectDB() 
 
-app.use(bodyParser());
+app.use(express.json());
 app.use('/api',authRoutes);
 app.use('/api',adminRoutes);
+app.use('/api',categoryRoutes);
 
 
 app.listen(process.env.PORT,()=>{
