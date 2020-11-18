@@ -8,6 +8,7 @@ const app = express();
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
 const categoryRoutes = require('./routes/category');
+const productRoutes = require('./routes/product');
 
 
 // cài đặt môi trường env
@@ -33,6 +34,7 @@ app.use(express.json());
 app.use('/api',authRoutes);
 app.use('/api',adminRoutes);
 app.use('/api',categoryRoutes);
+app.use('/api',productRoutes);
 
 
 app.listen(process.env.PORT,()=>{
