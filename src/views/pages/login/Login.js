@@ -1,7 +1,6 @@
 import React, {  useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Input from "../../../components/Input";
 import {  login } from "../../../actions";
 import { Redirect } from "react-router-dom";
 import {
@@ -16,9 +15,10 @@ import {
   CInputGroup,
   CInputGroupPrepend,
   CInputGroupText,
-  CRow,
+  CRow
 } from "@coreui/react";
-import CIcon from "@coreui/icons-react";
+import CIcon from '@coreui/icons-react'
+
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
@@ -55,20 +55,32 @@ const Login = (props) => {
                   <CForm onSubmit={userLogin}>
                     <h1>Login</h1>
                     <p className="text-muted">Sign In to your account</p>
-                    <Input
-                     // label="Email"
-                      placeholder="Email"
+                    <CInputGroup className="mb-3">
+                      <CInputGroupPrepend>
+                        <CInputGroupText>
+                          <CIcon name="cil-user" />
+                        </CInputGroupText>
+                      </CInputGroupPrepend>
+                      <CInput 
+                      type="email" 
+                      placeholder="Emmail" 
                       value={email}
-                      type="email"
                       onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <Input
-                     // label="Password"
-                      placeholder="Password"
+                       />
+                    </CInputGroup>
+                    <CInputGroup className="mb-3">
+                      <CInputGroupPrepend>
+                        <CInputGroupText>
+                          <CIcon name="cil-lock-locked" />
+                        </CInputGroupText>
+                      </CInputGroupPrepend>
+                      <CInput 
+                      type="password" 
+                      placeholder="Password" 
                       value={password}
-                      type="password"
                       onChange={(e) => setPassword(e.target.value)}
-                    />
+                       />
+                    </CInputGroup>
                     <CRow>
                       <CCol xs="6">
                         <CButton color="primary" className="px-4" type="submit">
