@@ -2,12 +2,34 @@ export default [
   {
     _tag: 'CSidebarNavItem',
     name: 'Dashboard',
-    to: '/dashboard',
+    to: '/',
     icon: 'cil-speedometer',
     badge: {
       color: 'info',
       text: 'NEW',
     }
+  },
+  {
+    _tag: 'CSidebarNavTitle',
+    _children: ['Menu']
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Category',
+    to: '/category',
+    icon: 'cil-drop',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Products',
+    to: '/products',
+    icon: 'cil-drop',
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Orders',
+    to: '/orders',
+    icon: 'cil-pencil',
   },
   {
     _tag: 'CSidebarNavTitle',

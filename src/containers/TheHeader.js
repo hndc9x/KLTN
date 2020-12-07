@@ -49,7 +49,7 @@ const TheHeader = () => {
 
   return (
     <CHeader withSubheader>
-      <CToggler
+      {/* <CToggler
         inHeader
         className="ml-md-3 d-lg-none"
         onClick={toggleSidebarMobile}
@@ -58,7 +58,7 @@ const TheHeader = () => {
         inHeader
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
-      />
+      /> */}
       <CHeaderBrand className="mx-auto d-lg-none" to="/">
         <CIcon name="logo" height="48" alt="Logo" />
       </CHeaderBrand>
@@ -97,7 +97,7 @@ const TheHeader = () => {
           <CLink
             className="c-subheader-nav-link"
             aria-current="page"
-            to="/dashboard"
+            to="/"
           >
             <CIcon name="cil-graph" alt="Dashboard" />
             &nbsp;Dashboard

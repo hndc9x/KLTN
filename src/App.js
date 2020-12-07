@@ -4,6 +4,9 @@ import "./scss/style.scss";
 import PrivateRoute from "../src/components/HOC/PrivateRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { isUserLoggedIn } from "./actions";
+import TheProduct from "./views/menu/products";
+import TheHome from "./views/dashboard/Dashboard";
+import TheCategory from "./views/menu/Category";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -13,6 +16,7 @@ const loading = (
 
 // Containers
 const TheLayout = React.lazy(() => import("./containers/TheLayout"));
+// const TheProduct = React.lazy(() => import('./views/menu/products'));
 
 // Pages
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -33,7 +37,10 @@ function App() {
     <div className="App">
       <React.Suspense fallback={loading}>
         <Switch>
-          <PrivateRoute path="/" exact component={TheLayout} />
+          <PrivateRoute path="/" exact component={TheHome} />
+          <PrivateRoute path="/category" component={TheCategory} />
+          <PrivateRoute path="/products" component={TheProduct} />
+          {/* <Route path="/" name="Home" render={props => <TheLayout {...props}/>} /> */}
           <Route
             exact
             path="/login"
