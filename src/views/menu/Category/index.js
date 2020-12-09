@@ -33,10 +33,10 @@ const Category = (props) => {
 
   const category = useSelector((state) => state.category);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("Category.js");
-    dispatch(getAllCategory());
-  }, []);
+  // useEffect(() => {
+  //   console.log("Category.js");
+  //   dispatch(getAllCategory());
+  // }, []);
 
   const renderCategories = (categories) => {
     let myCategories = [];

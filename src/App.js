@@ -3,7 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import "./scss/style.scss";
 import PrivateRoute from "../src/components/HOC/PrivateRoute";
 import { useDispatch, useSelector } from "react-redux";
-import { isUserLoggedIn } from "./actions";
+import { getInitialData, isUserLoggedIn } from "./actions";
 import TheProduct from "./views/menu/Product";
 import TheHome from "./views/dashboard/Dashboard";
 import TheCategory from "./views/menu/Category";
@@ -28,6 +28,7 @@ function App() {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
+    dispatch(getInitialData());
   }, []);
   return (
     <div className="App">

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TheFooter, TheHeader, TheSidebar } from "../../../containers";
+import  {Table} from 'react-bootstrap';
 import {
   CButton,
   CCard,
@@ -21,9 +22,12 @@ import {
   CInvalidFeedback,
   CValidFeedback,
   CSelect,
+  CDataTable,
+  CBadge,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { addProduct } from "../../../actions";
+import usersData from "../../users/UsersData";
 const Product = (props) => {
   // modal
   const [info, setInfo] = useState(false);
@@ -36,6 +40,7 @@ const Product = (props) => {
   const [categoryId, setCategoryId] = useState(``);
   const [productPictures, setProductPictures] = useState(``);
 
+  const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category);
 
@@ -49,16 +54,15 @@ const Product = (props) => {
     return options;
   };
   const handleClose = () => {
-
     const form = new FormData();
-    form.append('name',name);
-    form.append('quantity',quantity);
-    form.append('price',price);
-    form.append('description',description);
-    form.append('category',categoryId);
+    form.append("name", name);
+    form.append("quantity", quantity);
+    form.append("price", price);
+    form.append("description", description);
+    form.append("category", categoryId);
 
-    for(let pic of productPictures){
-      form.append('productPicture',pic);
+    for (let pic of productPictures) {
+      form.append("productPicture", pic);
     }
 
     dispatch(addProduct(form));
@@ -70,7 +74,109 @@ const Product = (props) => {
     setProductPictures([...productPictures, e.target.files[0]]);
   };
 
-  //console.log(productPictures);
+  // table
+  const getBadge = (status) => {
+    switch (status) {
+      case "Active":
+        return "success";
+      case "Inactive":
+        return "secondary";
+      case "Pending":
+        return "warning";
+      case "Banned":
+        return "danger";
+      default:
+        return "primary";
+    }
+  };
+  // const fields = [
+  //   "name",
+  //   "Price",
+  //   "Quantity",
+  //   "Description",
+  //   "Category",
+  //   "Product Pictures",
+  // ];
+
+  const fields = ["name", "registered", "role", "status"];
+
+  // console.log(product.name);
+  // const dataTable = [
+  //   {id:product._id , name:product.name}
+  // ]
+  // showtable
+  const indexTable = (index) => {
+    for(var i = 1 ;i<10;i++){
+      index = index + 1;
+      return <td>{index}</td>
+    }
+  }
+
+  const renderProducts = () => {
+    return (
+      <CRow>
+        <CCol>
+          <CCard>
+            <CCardHeader>All Product</CCardHeader>
+            <CCardBody>
+              <Table striped bordered hover variant="dark">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Description</th>
+                    {/* <th>Category</th>
+                    <th>Product Pictures</th> */}
+                  </tr>
+                </thead>
+                <tbody>
+                {product.products.length > 0
+                ? product.products.map((product) => (
+                    <tr key={product._id}>
+                      {/* <td>
+                        {indexTable(0)}
+                        </td> */}
+                        {indexTable(0)}
+                      <td>{product.name}</td>
+                      <td>{product.price}</td>
+                      <td>{product.quantity}</td>
+                      <td>{product.description}</td>
+                      {/* <td>{product.category}</td>
+                      <td>{product.productPictures}</td> */}
+                    </tr>
+                  ))
+                : null}
+                </tbody>
+              </Table>
+              {/* <CDataTable
+                items={usersData}
+                fields={fields}
+                hover
+                striped
+                bordered
+                size="sm"
+                itemsPerPage={10}
+                pagination
+                scopedSlots={{
+                  status: (item) => (
+                    <td>
+                      <CBadge color={getBadge(item.status)}>
+                        {item.status}
+                      </CBadge>
+                    </td>
+                  ),
+                }}
+               
+              /> */}
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+    );
+  };
+
   return (
     <>
       <div className="c-app c-default-layout">
@@ -184,7 +290,8 @@ const Product = (props) => {
                         {productPictures.length > 0
                           ? productPictures.map((pic, index) => (
                               <div key={index}>{pic.name}</div>
-                            ))  : null}
+                            ))
+                          : null}
                         <CFormGroup>
                           <CCol xs="12" md="9">
                             <CInputFile
@@ -197,7 +304,7 @@ const Product = (props) => {
                               htmlFor="custom-file-input"
                               variant="custom-file"
                             >
-                              Choose File 
+                              Choose File
                               {/* {productPictures.length > 0
                                 ? productPictures.map((pic, index) => (
                                     <div key={index}>{pic.name}</div>
@@ -222,6 +329,7 @@ const Product = (props) => {
               </CCol>
             </CRow>
             <h1>Hồ Ngọc Đình Châu - Product</h1>
+            {renderProducts()}
           </div>
           <TheFooter />
         </div>
