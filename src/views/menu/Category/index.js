@@ -101,7 +101,7 @@ const Category = (props) => {
                     onClick={() => setInfo(!info)}
                     className="mr-1"
                   >
-                    <CIcon name="cil-lightbulb" /> Add Category
+                    <CIcon name="cil-lightbulb" /> Add New Category
                   </CButton>
 
                   <CModal
@@ -122,7 +122,7 @@ const Category = (props) => {
                       <select className="form-control" value={parentCategoryId} onChange={(e) => setParentCategortId(e.target.value)}>
                         <option>Select Category</option>
                         {createCategoryList(category.categories).map(
-                          (option) => (
+                          (option => 
                             <option key={option.value} value={option.value}>
                               {option.name}
                             </option>

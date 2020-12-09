@@ -4,7 +4,7 @@ import "./scss/style.scss";
 import PrivateRoute from "../src/components/HOC/PrivateRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { isUserLoggedIn } from "./actions";
-import TheProduct from "./views/menu/products";
+import TheProduct from "./views/menu/Product";
 import TheHome from "./views/dashboard/Dashboard";
 import TheCategory from "./views/menu/Category";
 
@@ -13,10 +13,6 @@ const loading = (
     <div className="sk-spinner sk-spinner-pulse"></div>
   </div>
 );
-
-// Containers
-const TheLayout = React.lazy(() => import("./containers/TheLayout"));
-// const TheProduct = React.lazy(() => import('./views/menu/products'));
 
 // Pages
 const Login = React.lazy(() => import("./views/pages/login/Login"));
@@ -65,37 +61,9 @@ function App() {
             name="Page 500"
             render={(props) => <Page500 {...props} />}
           />
-          {/* <Route path="/" name="Home" render={props => <TheLayout {...props}/>} /> */}
-          {/* <PrivateRoute path="/products" component= {Products} />
-      <PrivateRoute path="/orders"  component={Orders} />
-      <Route path="/signin" component={Signin} />
-      <Route path="/signup" component={Signup} /> */}
         </Switch>
       </React.Suspense>
     </div>
-    // <HashRouter>
-    //     <React.Suspense fallback={loading}>
-    //       <Switch>
-    //         <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
-    //         <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
-    //         <Route exact path="/404" name="Page 404" render={props => <Page404 {...props}/>} />
-    //         <Route exact path="/500" name="Page 500" render={props => <Page500 {...props}/>} />
-    //         {/* <Route path="/" name="Home" render={props => <TheLayout {...props}/>} /> */}
-    //         {/* <Route path="/" name="Home" render={props => <TheLayout {...props}/>} /> */}
-    //         <PrivateRoute path="/" exact component={Home} />
-    //         {/* <PrivateRoute path="/" exact component={Home} render={props => <TheLayout {...props}/>}/> */}
-    //       </Switch>
-    //     </React.Suspense>
-    // </HashRouter>
   );
 }
-
-
-
-// class App extends Component {
-//   render() {
-    
-//   }
-// }
-
 export default App;
