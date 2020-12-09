@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TheFooter, TheHeader, TheSidebar } from "../../../containers";
-import  {Table} from 'react-bootstrap';
+import { Table ,Row,Col} from "react-bootstrap";
+import "./style.css";
+import {generatePublicUrl} from '../../../urlConfig';
 import {
   CButton,
   CCard,
@@ -30,7 +32,8 @@ import { addProduct } from "../../../actions";
 import usersData from "../../users/UsersData";
 const Product = (props) => {
   // modal
-  const [info, setInfo] = useState(false);
+  const [info, setInfo] = useState(false); // product details
+  const [success, setSuccess] = useState(false); // add product
 
   // modal body
   const [name, setName] = useState(``);
@@ -40,6 +43,7 @@ const Product = (props) => {
   const [categoryId, setCategoryId] = useState(``);
   const [productPictures, setProductPictures] = useState(``);
 
+  const [ProductDetails, setProductDetails] = useState(null);
   const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category);
@@ -67,7 +71,7 @@ const Product = (props) => {
 
     dispatch(addProduct(form));
 
-    setInfo(!info); // đóng modal
+    setSuccess(!success); // đóng modal
   };
 
   const handleProductPictures = (e) => {
@@ -89,28 +93,177 @@ const Product = (props) => {
         return "primary";
     }
   };
-  // const fields = [
-  //   "name",
-  //   "Price",
-  //   "Quantity",
-  //   "Description",
-  //   "Category",
-  //   "Product Pictures",
-  // ];
-
-  const fields = ["name", "registered", "role", "status"];
-
-  // console.log(product.name);
-  // const dataTable = [
-  //   {id:product._id , name:product.name}
-  // ]
-  // showtable
-  const indexTable = (index) => {
-    for(var i = 1 ;i<10;i++){
-      index = index + 1;
-      return <td>{index}</td>
+  const showProductDetailsModal = (product) => {
+    setProductDetails(product);
+    setInfo(!info);
+    // console.log(product);
+  };
+  //popup
+  const renderAddProductModal = () => {
+    return (
+      <CModal
+        show={success}
+        onClose={() => setSuccess(!success)}
+        color="success"
+      >
+        <CModalHeader closeButton>
+          <CModalTitle>Add New Product</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <h3>Enter Fill Information</h3>
+          <CForm className="was-validated">
+            <CFormGroup>
+              <CInput
+                placeholder="Product Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <CInput
+                placeholder="Quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <CInput
+                placeholder="Price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <CInput
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <select
+                className="form-control"
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+              >
+                <option>Select Category</option>
+                {createCategoryList(category.categories).map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.name}
+                  </option>
+                ))}
+              </select>
+            </CFormGroup>
+            {productPictures.length > 0
+              ? productPictures.map((pic, index) => (
+                  <div key={index}>{pic.name}</div>
+                ))
+              : null}
+            <CFormGroup>
+              <CCol xs="12" md="9">
+                <CInputFile
+                  custom
+                  id="custom-file-input"
+                  name="categoryImage"
+                  onChange={handleProductPictures}
+                />
+                <CLabel htmlFor="custom-file-input" variant="custom-file">
+                  Choose File
+                </CLabel>
+              </CCol>
+            </CFormGroup>
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setSuccess(!success)}>
+            Cancel
+          </CButton>
+          <CButton color="success" onClick={handleClose}>
+            OK
+          </CButton>{" "}
+        </CModalFooter>
+      </CModal>
+    );
+  };
+  // <CButton color="info" onClick={() => setInfo(!info)} className="mr-1">Info modal</CButton>
+  //ProductDetails
+  const renderProductDetailModal = () => {
+    if (!ProductDetails) {
+      return null;
     }
-  }
+    return (
+      <CModal show={info} onClose={() => setInfo(!info)} color="info">
+        <CModalHeader closeButton>
+          <CModalTitle>Product Details</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          {/* tam thoi dung col de canh hang */}
+          <label>Name</label>
+          <p>{ProductDetails.name}</p>
+          <label>Price</label>
+          <p>{ProductDetails.price}</p>
+          <label>Quantity</label>
+          <p>{ProductDetails.quantity}</p>
+          <label>Category</label>
+          <p>{ProductDetails.category.name}</p>
+          <label>Product Pictures</label>
+          <Row>
+            <Col style={{display:`flex`}}>
+              {ProductDetails.productPictures.map((picture) => (
+                <div className="productImg">
+                  <img src={generatePublicUrl(picture.img)} />
+                </div>
+              ))}
+            </Col>
+          </Row>
+        </CModalBody>
+        <CModalFooter>
+          <CButton color="secondary" onClick={() => setInfo(!info)}>
+            Cancel
+          </CButton>
+          <CButton color="info" onClick={() => setInfo(!info)}>
+            Do Something
+          </CButton>{" "}
+        </CModalFooter>
+      </CModal>
+    );
+  };
 
   const renderProducts = () => {
     return (
@@ -126,50 +279,28 @@ const Product = (props) => {
                     <th>Name</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>Description</th>
-                    {/* <th>Category</th>
-                    <th>Product Pictures</th> */}
+                    <th>Category</th>
                   </tr>
                 </thead>
                 <tbody>
-                {product.products.length > 0
-                ? product.products.map((product) => (
-                    <tr key={product._id}>
-                      {/* <td>
-                        {indexTable(0)}
-                        </td> */}
-                        {indexTable(0)}
-                      <td>{product.name}</td>
-                      <td>{product.price}</td>
-                      <td>{product.quantity}</td>
-                      <td>{product.description}</td>
-                      {/* <td>{product.category}</td>
-                      <td>{product.productPictures}</td> */}
-                    </tr>
-                  ))
-                : null}
+                  {product.products.length > 0
+                    ? product.products.map((product) => (
+                        <tr
+                          onClick={() => showProductDetailsModal(product)}
+                          key={product._id}
+                        >
+                          <td>1</td>
+                          <td>{product.name}</td>
+                          <td>{product.price}</td>
+                          <td>{product.quantity}</td>
+                          <td>{product.category.name}</td>
+                        </tr>
+                      ))
+                    : null}
                 </tbody>
               </Table>
-              {/* <CDataTable
-                items={usersData}
-                fields={fields}
-                hover
-                striped
-                bordered
-                size="sm"
-                itemsPerPage={10}
-                pagination
-                scopedSlots={{
-                  status: (item) => (
-                    <td>
-                      <CBadge color={getBadge(item.status)}>
-                        {item.status}
-                      </CBadge>
-                    </td>
-                  ),
-                }}
-               
-              /> */}
+              {renderAddProductModal()}
+              {renderProductDetailModal()}
             </CCardBody>
           </CCard>
         </CCol>
@@ -190,140 +321,11 @@ const Product = (props) => {
                 <CCardBody>
                   <CButton
                     color="success"
-                    onClick={() => setInfo(!info)}
+                    onClick={() => setSuccess(!success)}
                     className="mr-1"
                   >
                     <CIcon name="cil-lightbulb" /> Add New Product
                   </CButton>
-
-                  <CModal
-                    show={info}
-                    onClose={() => setInfo(!info)}
-                    color="success"
-                  >
-                    <CModalHeader closeButton>
-                      <CModalTitle>Add New Product</CModalTitle>
-                    </CModalHeader>
-                    <CModalBody>
-                      <h3>Enter Fill Information</h3>
-                      <CForm className="was-validated">
-                        <CFormGroup>
-                          <CInput
-                            placeholder="Product Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="form-control-warning"
-                            id="inputWarning2i"
-                            required
-                          />
-                          <CInvalidFeedback className="help-block">
-                            Please provide a valid information
-                          </CInvalidFeedback>
-                          <CValidFeedback className="help-block">
-                            Input provided
-                          </CValidFeedback>
-                        </CFormGroup>
-                        <CFormGroup>
-                          <CInput
-                            placeholder="Quantity"
-                            value={quantity}
-                            onChange={(e) => setQuantity(e.target.value)}
-                            className="form-control-warning"
-                            id="inputWarning2i"
-                            required
-                          />
-                          <CInvalidFeedback className="help-block">
-                            Please provide a valid information
-                          </CInvalidFeedback>
-                          <CValidFeedback className="help-block">
-                            Input provided
-                          </CValidFeedback>
-                        </CFormGroup>
-                        <CFormGroup>
-                          <CInput
-                            placeholder="Price"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            className="form-control-warning"
-                            id="inputWarning2i"
-                            required
-                          />
-                          <CInvalidFeedback className="help-block">
-                            Please provide a valid information
-                          </CInvalidFeedback>
-                          <CValidFeedback className="help-block">
-                            Input provided
-                          </CValidFeedback>
-                        </CFormGroup>
-                        <CFormGroup>
-                          <CInput
-                            placeholder="Description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            className="form-control-warning"
-                            id="inputWarning2i"
-                            required
-                          />
-                          <CInvalidFeedback className="help-block">
-                            Please provide a valid information
-                          </CInvalidFeedback>
-                          <CValidFeedback className="help-block">
-                            Input provided
-                          </CValidFeedback>
-                        </CFormGroup>
-                        <CFormGroup>
-                          <select
-                            className="form-control"
-                            value={categoryId}
-                            onChange={(e) => setCategoryId(e.target.value)}
-                          >
-                            <option>Select Category</option>
-                            {createCategoryList(category.categories).map(
-                              (option) => (
-                                <option key={option.value} value={option.value}>
-                                  {option.name}
-                                </option>
-                              )
-                            )}
-                          </select>
-                        </CFormGroup>
-                        {productPictures.length > 0
-                          ? productPictures.map((pic, index) => (
-                              <div key={index}>{pic.name}</div>
-                            ))
-                          : null}
-                        <CFormGroup>
-                          <CCol xs="12" md="9">
-                            <CInputFile
-                              custom
-                              id="custom-file-input"
-                              name="categoryImage"
-                              onChange={handleProductPictures}
-                            />
-                            <CLabel
-                              htmlFor="custom-file-input"
-                              variant="custom-file"
-                            >
-                              Choose File
-                              {/* {productPictures.length > 0
-                                ? productPictures.map((pic, index) => (
-                                    <div key={index}>{pic.name}</div>
-                                  ))
-                                : null} */}
-                            </CLabel>
-                          </CCol>
-                        </CFormGroup>
-                      </CForm>
-                    </CModalBody>
-                    <CModalFooter>
-                      <CButton color="secondary" onClick={() => setInfo(!info)}>
-                        Cancel
-                      </CButton>
-                      <CButton color="success" onClick={handleClose}>
-                        OK
-                      </CButton>{" "}
-                    </CModalFooter>
-                  </CModal>
                 </CCardBody>
                 {/* </CCard> */}
               </CCol>
