@@ -1,9 +1,10 @@
 const User =  require('../models/user');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 exports.signup =(req,res) =>{
     User.findOne({email:req.body.email})
-    .exec((error,user)=>{
+    .exec(async (error,user)=>{
         if(user) return res.status(400).json({
             message:'Users already registereds'
         });
@@ -14,7 +15,8 @@ exports.signup =(req,res) =>{
             email,
             password
         }= req.body;
-        const _user = new User({firstName,lastName,email,password,username:Math.random().toString(),role:'user'});
+        const hash_password = await bcrypt.hash(password,10);
+        const _user = new User({firstName,lastName,email,hash_password,username:Math.random().toString(),role:'user'});
         _user.save((error,data)=>{
             if(error){
                 return res.status(400).json({
@@ -37,7 +39,7 @@ exports.signin =(req,res) =>{
         if(error) return res.status(400).json({error});
         if(user){
             if(user.authenticate(req.body.password)){
-                const token = jwt.sign({_id: user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:'1h'});
+                const token = jwt.sign({_id: user._id,role:user.role},process.env.JWT_SECRET,{expiresIn:'1d'});
                 const{
                     _id,
                     firstName,

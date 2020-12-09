@@ -20,7 +20,7 @@ function createCategories(categories, parentId = null){
             name: cate.name,
             slug: cate.slug,
             parentId: cate.parentId,
-            type: cate.type,
+           // type: cate.type,
             children: createCategories(categories, cate._id)
         });
     }
@@ -33,7 +33,8 @@ exports.addCategory = (req, res) => {
 
     const categoryObj = {
         name: req.body.name,
-        slug: `${slugify(req.body.name)}-${shortid.generate()}`
+        slug: `${slugify(req.body.name)}`  
+        //  -${shortid.generate()}
     }
 
     if(req.file){
