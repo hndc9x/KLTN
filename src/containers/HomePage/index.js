@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "../../components/Header";
-import Menu from "../../components/Menu";
+import Layout from "../../components/Layout";
+
 
 /**
  * @author
@@ -10,8 +10,9 @@ import Menu from "../../components/Menu";
 const HomePage = (props) => {
   return (
     <div>
-      <Header />
-      <Menu />
+      <Layout>
+          <h1>Hồ Ngọc Đình Châu</h1>
+      </Layout>
     </div>
   );
 };
