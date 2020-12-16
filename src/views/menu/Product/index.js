@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TheFooter, TheHeader, TheSidebar } from "../../../containers";
-import { Table ,Row,Col} from "react-bootstrap";
+import { Table, Row, Col } from "react-bootstrap";
 import "./style.css";
-import {generatePublicUrl} from '../../../urlConfig';
+import { generatePublicUrl } from "../../../urlConfig";
 import {
   CButton,
   CCard,
@@ -23,13 +23,9 @@ import {
   CInput,
   CInvalidFeedback,
   CValidFeedback,
-  CSelect,
-  CDataTable,
-  CBadge,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { addProduct } from "../../../actions";
-import usersData from "../../users/UsersData";
 const Product = (props) => {
   // modal
   const [info, setInfo] = useState(false); // product details
@@ -78,21 +74,6 @@ const Product = (props) => {
     setProductPictures([...productPictures, e.target.files[0]]);
   };
 
-  // table
-  const getBadge = (status) => {
-    switch (status) {
-      case "Active":
-        return "success";
-      case "Inactive":
-        return "secondary";
-      case "Pending":
-        return "warning";
-      case "Banned":
-        return "danger";
-      default:
-        return "primary";
-    }
-  };
   const showProductDetailsModal = (product) => {
     setProductDetails(product);
     setInfo(!info);
@@ -176,39 +157,39 @@ const Product = (props) => {
                 Input provided
               </CValidFeedback>
             </CFormGroup>
-            <CFormGroup>
-              <select
-                className="form-control"
-                value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
-              >
-                <option>Select Category</option>
-                {createCategoryList(category.categories).map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.name}
-                  </option>
-                ))}
-              </select>
-            </CFormGroup>
-            {productPictures.length > 0
-              ? productPictures.map((pic, index) => (
-                  <div key={index}>{pic.name}</div>
-                ))
-              : null}
-            <CFormGroup>
-              <CCol xs="12" md="9">
-                <CInputFile
-                  custom
-                  id="custom-file-input"
-                  name="categoryImage"
-                  onChange={handleProductPictures}
-                />
-                <CLabel htmlFor="custom-file-input" variant="custom-file">
-                  Choose File
-                </CLabel>
-              </CCol>
-            </CFormGroup>
           </CForm>
+          <CFormGroup>
+            <select
+              className="form-control"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+            >
+              <option>Select Category</option>
+              {createCategoryList(category.categories).map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </CFormGroup>
+          {productPictures.length > 0
+            ? productPictures.map((pic, index) => (
+                <div key={index}>{pic.name}</div>
+              ))
+            : null}
+          <CFormGroup>
+            <CCol xs="12" md="9">
+              <CInputFile
+                custom
+                id="custom-file-input"
+                name="categoryImage"
+                onChange={handleProductPictures}
+              />
+              <CLabel htmlFor="custom-file-input" variant="custom-file">
+                Choose File
+              </CLabel>
+            </CCol>
+          </CFormGroup>
         </CModalBody>
         <CModalFooter>
           <CButton color="secondary" onClick={() => setSuccess(!success)}>
@@ -244,7 +225,7 @@ const Product = (props) => {
           <p>{ProductDetails.category.name}</p>
           <label>Product Pictures</label>
           <Row>
-            <Col style={{display:`flex`}}>
+            <Col style={{ display: `flex` }}>
               {ProductDetails.productPictures.map((picture) => (
                 <div className="productImg">
                   <img src={generatePublicUrl(picture.img)} />
@@ -270,7 +251,7 @@ const Product = (props) => {
       <CRow>
         <CCol>
           <CCard>
-            <CCardHeader>All Product</CCardHeader>
+            <CCardHeader><b><h3>ALL PRODUCT</h3></b></CCardHeader>
             <CCardBody>
               <Table striped bordered hover variant="dark">
                 <thead>
@@ -315,23 +296,22 @@ const Product = (props) => {
         <div className="c-wrapper">
           <TheHeader />
           <div className="c-body">
-            <CRow>
-              <CCol>
-                {/* <CCard> khung trắng */}
-                <CCardBody>
+            <CCardBody>
+              <CRow>
+                <CCol>
+                  {/* <CCard> khung trắng */}
                   <CButton
                     color="success"
                     onClick={() => setSuccess(!success)}
                     className="mr-1"
                   >
-                    <CIcon name="cil-lightbulb" /> Add New Product
+                    <CIcon name="cil-lightbulb" /> Create New Product
                   </CButton>
-                </CCardBody>
-                {/* </CCard> */}
-              </CCol>
-            </CRow>
-            <h1>Hồ Ngọc Đình Châu - Product</h1>
-            {renderProducts()}
+                </CCol>
+              </CRow>
+              <p></p>
+              {renderProducts()}
+            </CCardBody>
           </div>
           <TheFooter />
         </div>

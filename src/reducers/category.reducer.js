@@ -6,6 +6,7 @@ const initState = {
     error: null
 };
 
+
 const buildNewCategories = (parentId, categories, category) => {
     let myCategories = [];
 
@@ -16,7 +17,7 @@ const buildNewCategories = (parentId, categories, category) => {
                 _id: category._id,
                 name: category.name,
                 slug: category.slug,
-             //   type: category.type,
+                type: category.type,
                 children: []
             }
         ];
@@ -30,7 +31,7 @@ const buildNewCategories = (parentId, categories, category) => {
                 name: category.name,
                 slug: category.slug,
                 parentId: category.parentId,
-                //type: category.type,
+                type: category.type,
                 children: []
             };
             myCategories.push({
@@ -50,6 +51,8 @@ const buildNewCategories = (parentId, categories, category) => {
 
     return myCategories;
 }
+
+
 export default (state = initState, action) => {
     switch(action.type){
         case categoryConstansts.GET_ALL_CATEGORIES_SUCCESS:
@@ -64,62 +67,62 @@ export default (state = initState, action) => {
                 loading: true
             }
             break;
-            case categoryConstansts.ADD_NEW_CATEGORY_SUCCESS:
-                const category = action.payload.category;
-                const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
-                console.log('updated categoires', updatedCategories);
-                
-                state = {
-                    ...state,
-                    categories: updatedCategories,
-                    loading: false,
-                }
-                break;
+        case categoryConstansts.ADD_NEW_CATEGORY_SUCCESS:
+            const category = action.payload.category;
+            const updatedCategories = buildNewCategories(category.parentId, state.categories, category);
+            console.log('updated categoires', updatedCategories);
+            
+            state = {
+                ...state,
+                categories: updatedCategories,
+                loading: false,
+            }
+            break;
         case categoryConstansts.ADD_NEW_CATEGORY_FAILURE:
             state = {
                 ...initState,
-               // loading: false,
-              //  error: action.payload.error
+                loading: false,
+                error: action.payload.error
             }
             break;
-        // case categoryConstansts.UPDATE_CATEGORIES_REQUEST:
-        //     state = {
-        //         ...state,
-        //         loading: true
-        //     }
-        //     break;
-        // case categoryConstansts.UPDATE_CATEGORIES_SUCCESS:
-        //     state = {
-        //         ...state,
-        //         loading: false
-        //     }
-        //     break;
-        // case categoryConstansts.UPDATE_CATEGORIES_FAILURE:
-        //     state = {
-        //         ...state,
-        //         error: action.payload.error,
-        //         loading: false
-        //     }
-        //     break;
-        // case categoryConstansts.DELETE_CATEGORIES_REQUEST:
-        //     state = {
-        //         ...state,
-        //         loading: true
-        //     }
-        //     break;
-        // case categoryConstansts.DELETE_CATEGORIES_SUCCESS:
-        //     state = {
-        //         ...state,
-        //         loading: false
-        //     }
-        //     break;
-        // case categoryConstansts.DELETE_CATEGORIES_FAILURE:
-        //     state = {
-        //         ...state,
-        //         loading: false,
-        //         error: action.payload.error
-        //     }
-        //     break;
+        case categoryConstansts.UPDATE_CATEGORIES_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstansts.UPDATE_CATEGORIES_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case categoryConstansts.UPDATE_CATEGORIES_FAILURE:
+            state = {
+                ...state,
+                error: action.payload.error,
+                loading: false
+            }
+            break;
+        case categoryConstansts.DELETE_CATEGORIES_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstansts.DELETE_CATEGORIES_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case categoryConstansts.DELETE_CATEGORIES_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;
     }
 
     return state;

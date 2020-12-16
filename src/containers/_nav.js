@@ -17,13 +17,13 @@ export default [
     _tag: 'CSidebarNavItem',
     name: 'Category',
     to: '/category',
-    icon: 'cil-drop',
+    icon: 'cil-puzzle',
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Products',
     to: '/products',
-    icon: 'cil-drop',
+    icon: 'cil-star',
   },
   {
     _tag: 'CSidebarNavItem',
