@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCategory ,updateCategories} from "../../../actions";
+import { addCategory, 
+  updateCategories ,
+  getAllCategory,
+  deleteCategories as deleteCategoriesAction
+} from "../../../actions";
 import { TheFooter, TheHeader, TheSidebar } from "../../../containers";
 import CheckboxTree from "react-checkbox-tree";
 import { Row, Col } from "react-bootstrap";
@@ -94,7 +98,10 @@ const Category = (props) => {
   };
 
   const updateCategory = () => {
+    updateCheckedAndExpandedCategories();
     setUpdateCategoryModal(!updateCategoryModal);
+  };
+  const updateCheckedAndExpandedCategories = () => {
     const categories = createCategoryList(category.categories);
     const checkedArray = [];
     const expandedArray = [];
@@ -114,7 +121,6 @@ const Category = (props) => {
       });
     setCheckedArray(checkedArray);
     setExpandedArray(expandedArray);
-    console.log({ checked, expanded, categories, checkedArray, expandedArray });
   };
 
   const updateCategoriesForm = () => {
@@ -137,11 +143,29 @@ const Category = (props) => {
     setUpdateCategoryModal(!updateCategoryModal);
   };
   const deleteCategory = () => {
-    // updateCheckedAndExpandedCategories();
+    updateCheckedAndExpandedCategories();
     setDeleteCategoryModal(!deleteCategoryModal);
   };
 
+  const deleteCategories = () => {
+    const checkedIdsArray = checkedArray.map((item, index) => ({ _id: item.value }));
+    const expandedIdsArray = expandedArray.map((item, index) => ({ _id: item.value }));
+    const idsArray = expandedIdsArray.concat(checkedIdsArray);
 
+    if (checkedIdsArray.length > 0) {
+        dispatch(deleteCategoriesAction(checkedIdsArray))
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategory())
+                    setDeleteCategoryModal(false)
+                }
+            });
+    }
+
+    setDeleteCategoryModal(false);
+
+
+}
   const handleCategoryInput = (key, value, index, type) => {
     console.log(value);
     if (type == "checked") {
@@ -274,7 +298,7 @@ const Category = (props) => {
           >
             Cancel
           </CButton>
-          <CButton color="success" onClick={updateCategoriesForm}>
+          <CButton color="primary" onClick={updateCategoriesForm}>
             OK
           </CButton>{" "}
         </CModalFooter>
@@ -354,7 +378,17 @@ const Category = (props) => {
           <CModalTitle>Delete Category</CModalTitle>
         </CModalHeader>
         <CModalBody>
-          <h1>Do you want delete Category</h1>
+          <h5>
+            <center>Do you want delete Category</center>
+          </h5>
+          <h5>Expaned</h5>
+          {
+              expandedArray.map((item, index) => <span key={index}>{item.name}</span>)
+          }
+          <h5>Checked</h5>
+          {
+            checkedArray.map((item, index) => <span key={index}>{item.name}</span>)
+          }
         </CModalBody>
         <CModalFooter>
           <CButton
@@ -363,14 +397,14 @@ const Category = (props) => {
           >
             Cancel
           </CButton>
-          <CButton color="success" onClick={deleteCategory}>
+          <CButton color="danger" onClick={deleteCategories}>
             OK
           </CButton>{" "}
         </CModalFooter>
       </CModal>
     );
   };
-  
+
   return (
     <>
       <div className="c-app c-default-layout">
