@@ -20,7 +20,7 @@ function createCategories(categories, parentId = null){
             name: cate.name,
             slug: cate.slug,
             parentId: cate.parentId,
-           // type: cate.type,
+            type: cate.type,
             children: createCategories(categories, cate._id)
         });
     }
@@ -66,36 +66,40 @@ exports.getCategories = (req, res) => {
 }
 
 exports.updateCategories = async (req, res) => {
-
-    const {_id, name, parentId, type} = req.body;
+    const { _id, name, parentId, type } = req.body;
     const updatedCategories = [];
-    if(name instanceof Array){
-        for(let i=0; i < name.length; i++){
-            const category = {
-                name: name[i],
-                type: type[i]
-            };
-            if(parentId[i] !== ""){
-                category.parentId = parentId[i];
-            }
-
-            const updatedCategory =  await Category.findOneAndUpdate({_id: _id[i]}, category, {new: true});
-            updatedCategories.push(updatedCategory);
-        }
-        return res.status(201).json({ updateCategories: updatedCategories });
-    }else{
+    if (name instanceof Array) {
+      for (let i = 0; i < name.length; i++) {
         const category = {
-            name,
-            type
+          name: name[i],
+          type: type[i],
         };
-        if(parentId !== ""){
-            category.parentId = parentId;
+        if (parentId[i] !== "") {
+          category.parentId = parentId[i];
         }
-        const updatedCategory =  await Category.findOneAndUpdate({_id}, category, {new: true});
-        return res.status(201).json({ updatedCategory });
+  
+        const updatedCategory = await Category.findOneAndUpdate(
+          { _id: _id[i] },
+          category,
+          { new: true }
+        );
+        updatedCategories.push(updatedCategory);
+      }
+      return res.status(201).json({ updateCategories: updatedCategories });
+    } else {
+      const category = {
+        name,
+        type,
+      };
+      if (parentId !== "") {
+        category.parentId = parentId;
+      }
+      const updatedCategory = await Category.findOneAndUpdate({ _id }, category, {
+        new: true,
+      });
+      return res.status(201).json({ updatedCategory });
     }
-
-}
+  };
 
 exports.deleteCategories = async (req, res) => {
     const { ids } = req.body.payload;
