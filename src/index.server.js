@@ -13,7 +13,7 @@ const categoryRoutes = require('./routes/category');
 const productRoutes = require('./routes/product');
 const cartRoutes = require('./routes/cart');
 const initalDataRoutes = require('./routes/admin/initialData');
-
+const pageRoutes = require('./routes/admin/page');
 
 // cài đặt môi trường env
 env.config();
@@ -43,7 +43,7 @@ app.use('/api',categoryRoutes);
 app.use('/api',productRoutes);
 app.use('/api',cartRoutes);
 app.use('/api',initalDataRoutes);
-
+app.use('/api',pageRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running is port ${process.env.PORT}`);
