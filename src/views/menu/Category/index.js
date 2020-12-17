@@ -28,7 +28,7 @@ import {
   CInput,
 } from "@coreui/react";
 import Input from "../../../components/Input";
-import { IoTrashBin, IoPencilSharp, IoAddCircleSharp } from "react-icons/io5";
+import { IoTrashBin, IoPencilSharp,IoCloudUploadSharp,IoAddCircleSharp } from "react-icons/io5";
 import {
   IoArrowForward,
   IoArrowDownOutline,
@@ -68,18 +68,21 @@ const Category = (props) => {
   };
 
   const createCategoryList = (categories, options = []) => {
+
     for (let category of categories) {
-      options.push({
-        value: category._id,
-        name: category.name,
-        parentId: category.parentId,
-      });
-      if (category.children.length > 0) {
-        createCategoryList(category.children, options);
-      }
+        options.push({
+            value: category._id,
+            name: category.name,
+            parentId: category.parentId,
+            type: category.type
+        });
+        if (category.children.length > 0) {
+            createCategoryList(category.children, options)
+        }
     }
+
     return options;
-  };
+}
 
   const handleCategoryImage = (e) => {
     setCategoryImage(e.target.files[0]);
@@ -87,6 +90,11 @@ const Category = (props) => {
 
   const handleClose = () => {
     const form = new FormData();
+
+    if(categoryName === ""){
+      alert("Name is required");
+      return;
+    }
 
     form.append("name", categoryName);
     form.append("parentId", parentCategoryId);
@@ -232,7 +240,18 @@ const Category = (props) => {
                   </select>
                 </Col>
                 <Col>
-                  <select className="form-control">
+                  <select 
+                    className="form-control"
+                    value={item.type}
+                    onChange={(e) =>
+                      handleCategoryInput(
+                        "type",
+                        e.target.value,
+                        index,
+                        "expanded"
+                      )
+                    }
+                  >
                     <option value="">Select Type</option>
                     <option value="store">Store</option>
                     <option value="product">Product</option>
@@ -281,7 +300,18 @@ const Category = (props) => {
                   </select>
                 </Col>
                 <Col>
-                  <select className="form-control">
+                  <select 
+                    className="form-control"
+                    value={item.type}
+                    onChange={(e) =>
+                      handleCategoryInput(
+                        "type",
+                        e.target.value,
+                        index,
+                        "checked"
+                      )
+                    }
+                  >
                     <option value="">Select Type</option>
                     <option value="store">Store</option>
                     <option value="product">Product</option>
@@ -420,7 +450,22 @@ const Category = (props) => {
                     onClick={() => setInfo(!info)}
                     className="mr-1"
                   >
-                    <IoAddCircleSharp /> Create New Category
+                    <IoAddCircleSharp /> <span>Create</span>
+                  </CButton>
+                  <CButton
+                    color="primary"
+                    onClick={updateCategory}
+                    className="mr-1"
+                  >
+                    <IoCloudUploadSharp /> <span>Edit</span>
+                  </CButton>
+                  {/* Button xoa  */}
+                  <CButton
+                    color="danger"
+                    onClick={deleteCategory}
+                    className="mr-1"
+                  >
+                    <IoTrashBin /> <span>Delete</span>
                   </CButton>
                 </CCardBody>
               </CCol>
@@ -441,26 +486,6 @@ const Category = (props) => {
               }}
             />
             <Row>
-              <CCol>
-                {/* <CCard> khung trắng */}
-                <CCardBody>
-                  <CButton
-                    color="primary"
-                    onClick={updateCategory}
-                    className="mr-1"
-                  >
-                    <IoPencilSharp /> Update Category
-                  </CButton>
-                  {/* Button xoa  */}
-                  <CButton
-                    color="danger"
-                    onClick={deleteCategory}
-                    className="mr-1"
-                  >
-                    <IoTrashBin /> Delete
-                  </CButton>
-                </CCardBody>
-              </CCol>
               {renderAddCategoriesModal()}
               {renderUpdateCategoriesModal()}
               {renderDeleteCategoriesModal()}

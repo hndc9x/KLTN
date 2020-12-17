@@ -7,7 +7,8 @@ import { getInitialData, isUserLoggedIn } from "./actions";
 import TheProduct from "./views/menu/Product";
 import TheHome from "./views/dashboard/Dashboard";
 import TheCategory from "./views/menu/Category";
-
+import ThePage from "./views/menu/NewPage";
+import TheOrder from "./views/menu/Order";
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -37,6 +38,8 @@ function App() {
           <PrivateRoute path="/" exact component={TheHome} />
           <PrivateRoute path="/category" component={TheCategory} />
           <PrivateRoute path="/products" component={TheProduct} />
+          <PrivateRoute path="/orders" component={TheOrder} />
+          <PrivateRoute path="/page" component={ThePage} />
           {/* <Route path="/" name="Home" render={props => <TheLayout {...props}/>} /> */}
           <Route
             exact

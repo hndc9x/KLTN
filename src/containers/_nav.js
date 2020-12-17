@@ -32,6 +32,12 @@ export default [
     icon: 'cil-pencil',
   },
   {
+    _tag: 'CSidebarNavItem',
+    name: 'Page',
+    to: '/page',
+    icon: 'cil-pencil',
+  },
+  {
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
