@@ -42,18 +42,49 @@ const NewPage = (props) => {
   const [banners, setBanners] = useState([]);
   const [products, setProducts] = useState([]);
 
+  const category = useSelector((state) => state.category);
+  const page = useSelector((state) => state.page);
+
   const dispatch = useDispatch();
   useEffect(() => {
     setCategories(linearCategories(category.categories));
   }, [category]);
 
-  const category = useSelector((state) => state.category);
+  useEffect(() => {
+    console.log(page);
+    if (!page.loading) {
+      setCreateModal(!createModal);
+      setTitle("");
+      setCategoryId("");
+      setDesc("");
+      setProducts([]);
+      setBanners([]);
+    }
+  }, [page]);
+
+  const createCategoryList = (categories, options = []) => {
+    for (let category of categories) {
+      options.push({
+        value: category._id,
+        name: category.name,
+        parentId: category.parentId,
+        type: category.type,
+      });
+      if (category.children.length > 0) {
+        createCategoryList(category.children, options);
+      }
+    }
+
+    return options;
+  };
 
   const onCategoryChange = (e) => {
-    const category = categories.find(category => category.value == e.target.value);
+    const category = categories.find(
+      (category) => category.value == e.target.value
+    );
     setCategoryId(e.target.value);
     setType(category.type);
-  }
+  };
   const handleBannerImages = (e) => {
     console.log(e);
     setBanners([...banners, e.target.files[0]]);
@@ -67,26 +98,26 @@ const NewPage = (props) => {
   const submitPageForm = (e) => {
     //e.target.preventDefault();
 
-    if(title === ""){
-        alert('Title is required');
-        setCreateModal(!createModal);
-        return;
+    if (title === "") {
+      alert("Title is required");
+      setCreateModal(!createModal);
+      return;
     }
 
     const form = new FormData();
-    form.append('title', title);
-    form.append('description', desc);
-    form.append('category', categoryId);
-    form.append('type', type);
+    form.append("title", title);
+    form.append("description", desc);
+    form.append("category", categoryId);
+    form.append("type", type);
     banners.forEach((banner, index) => {
-        form.append('banners', banner);
+      form.append("banners", banner);
     });
     products.forEach((product, index) => {
-        form.append('products', product);
+      form.append("products", product);
     });
 
-    dispatch(createPage(form)); 
-  }
+    dispatch(createPage(form));
+  };
   const renderCreatePageModal = () => {
     return (
       <CModal
@@ -106,12 +137,13 @@ const NewPage = (props) => {
               onChange={onCategoryChange}
             >
               <option>Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
+              {createCategoryList(category.categories).map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
                 </option>
               ))}
             </select>
+            <p></p>
           </CFormGroup>
           <CForm className="was-validated">
             <CFormGroup>
@@ -148,16 +180,13 @@ const NewPage = (props) => {
             </CFormGroup>
           </CForm>
           <CFormGroup>
-            {
-              banners.length > 0 ?
-              banners.map((banner,index) => 
-              <CRow key={index}>
-                <CCol>
-                    {banner.name}
-                </CCol>
-              </CRow>
-              ):null
-            }
+            {banners.length > 0
+              ? banners.map((banner, index) => (
+                  <CRow key={index}>
+                    <CCol>{banner.name}</CCol>
+                  </CRow>
+                ))
+              : null}
             <CCol xs="12" md="9">
               <CInputFile
                 custom
@@ -171,16 +200,13 @@ const NewPage = (props) => {
             </CCol>
           </CFormGroup>
           <CFormGroup>
-          {
-              products.length > 0 ?
-              products.map((product,index) => 
-              <CRow key={index}>
-                <CCol>
-                    {product.name}
-                </CCol>
-              </CRow>
-              ):null
-            }
+            {products.length > 0
+              ? products.map((product, index) => (
+                  <CRow key={index}>
+                    <CCol>{product.name}</CCol>
+                  </CRow>
+                ))
+              : null}
             <CCol xs="12" md="9">
               <CInputFile
                 custom
@@ -218,14 +244,20 @@ const NewPage = (props) => {
             <CRow>
               <CCol>
                 <CCardBody>
-                  <CButton
-                    color="success"
-                    onClick={() => setCreateModal(!createModal)}
-                    className="mr-1"
-                  >
-                    <IoAddCircleSharp /> <span>Create</span>
-                  </CButton>
-                  {renderCreatePageModal()}
+                  {page.loading ? (
+                    <p>Creating Page...please wait</p>
+                  ) : (
+                    <>
+                      {renderCreatePageModal()}
+                      <CButton
+                        color="success"
+                        onClick={() => setCreateModal(!createModal)}
+                        className="mr-1"
+                      >
+                        <IoAddCircleSharp /> <span>Create</span>
+                      </CButton>
+                    </>
+                  )}
                 </CCardBody>
               </CCol>
             </CRow>

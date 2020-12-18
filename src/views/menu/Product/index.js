@@ -202,7 +202,6 @@ const Product = (props) => {
       </CModal>
     );
   };
-  // <CButton color="info" onClick={() => setInfo(!info)} className="mr-1">Info modal</CButton>
   //ProductDetails
   const renderProductDetailModal = () => {
     if (!ProductDetails) {
@@ -229,6 +228,9 @@ const Product = (props) => {
               {ProductDetails.productPictures.map((picture) => (
                 <div className="productImg">
                   <img src={generatePublicUrl(picture.img)} />
+                  {
+                    console.log('check',picture.img)
+                  }
                 </div>
               ))}
             </Col>

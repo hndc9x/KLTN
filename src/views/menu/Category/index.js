@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addCategory, 
   updateCategories ,
@@ -54,6 +54,14 @@ const Category = (props) => {
   const category = useSelector((state) => state.category);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+
+    if (!category.loading) {
+        setInfo(!info);
+    }
+
+}, [category.loading]);
+
   const renderCategories = (categories) => {
     let myCategories = [];
     for (let category of categories) {
@@ -93,6 +101,7 @@ const Category = (props) => {
 
     if(categoryName === ""){
       alert("Name is required");
+      setInfo(!info);
       return;
     }
 
