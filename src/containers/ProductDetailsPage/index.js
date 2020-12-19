@@ -8,6 +8,7 @@ import { AiFillThunderbolt } from "react-icons/ai";
 import { MaterialButton } from "../../components/MaterialUI";
 import "./style.css";
 import { addToCart } from "../../actions";
+import { generatePublicUrl } from '../../urlConfig';
 
 /**
  * @author
@@ -42,16 +43,14 @@ const ProductDetailsPage = (props) => {
           <div className="verticalImageStack">
             {product.productDetails.productPictures.map((thumb, index) => (
               <div className="thumbnail">
-                <img src={thumb.img} alt={thumb.img} />
+                <img src={generatePublicUrl(thumb.img)} alt={thumb.img} />
               </div>
             ))}
           </div>
           <div className="productDescContainer">
             <div className="productDescImgContainer">
-              <img
-                src={product.productDetails.productPictures[0].img}
-                alt={`${product.productDetails.productPictures[0].img}`}
-              />
+            <img src={generatePublicUrl(product.productDetails.productPictures[0].img)} 
+            alt={`${product.productDetails.productPictures[0].img}`} />
             </div>
 
             {/* action buttons */}

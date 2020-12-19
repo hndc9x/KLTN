@@ -7,13 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { isUserLoggedIn, updateCart } from "./actions";
 import ProductDetailsPage from "./containers/ProductDetailsPage";
 import CartPage from "./containers/CartPage";
-// import CheckoutPage from "./containers/CheckoutPage";
-// import OrderPage from "./containers/OrderPage";
-// import OrderDetailsPage from "./containers/OrderDetailsPage";
+import CheckoutPage from "./containers/CheckoutPage";
+import OrderPage from "./containers/OrderPage";
+import OrderDetailsPage from "./containers/OrderDetailsPage";
 
 function App() {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
+
   useEffect(() => {
     if (!auth.authenticate) {
       dispatch(isUserLoggedIn());
@@ -24,14 +25,21 @@ function App() {
     console.log("App.js - updateCart");
     dispatch(updateCart());
   }, [auth.authenticate]);
+
   return (
     <div className="App">
       <Router>
         <Switch>
-          <Route path='/' exact component={HomePage} />
-          <Route path='/:slug' exact component={ProductListPage} />
+          <Route path="/" exact component={HomePage} />
           <Route path="/cart" component={CartPage} />
-          <Route path="/:productSlug/:productId/p" component={ProductDetailsPage}/>
+          <Route path="/checkout" component={CheckoutPage} />
+          <Route path="/account/orders" component={OrderPage} />
+          <Route path="/order_details/:orderId" component={OrderDetailsPage} />
+          <Route
+            path="/:productSlug/:productId/p"
+            component={ProductDetailsPage}
+          />
+          <Route path="/:slug" component={ProductListPage} />
         </Switch>
       </Router>
     </div>

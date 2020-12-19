@@ -14,14 +14,7 @@ import { MaterialButton } from "../../components/MaterialUI";
  * @function CartPage
  **/
 
-/*
-Before Login
-Add product to cart
-save in localStorage
-when try to checkout ask for credentials and 
-if logged in then add products to users cart database from localStorage
-*/
-
+ 
 const CartPage = (props) => {
   const cart = useSelector((state) => state.cart);
   const auth = useSelector((state) => state.auth);
