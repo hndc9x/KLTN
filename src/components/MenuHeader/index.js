@@ -1,20 +1,23 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllCategory } from "../../actions";
-import "./style.css";
+import React, { useEffect } from 'react';
+import './style.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllCategory } from '../../actions';
 
 /**
- * @author
- * @function Menu
- **/
+* @author
+* @function MenuHeader
+**/
 
-const Menu = (props) => {
-  const category = useSelector((state) => state.category);
+const MenuHeader = (props) => {
+
+  const category = useSelector(state => state.category);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllCategory());
   }, []);
+
+
   const renderCategories = (categories) => {
     let myCategories = [];
     for (let category of categories) {
@@ -32,14 +35,15 @@ const Menu = (props) => {
       );
     }
     return myCategories;
-  };
-
-  return( 
-  <div className="menuHeader">
+  }
+  return (
+    <div className="menuHeader">
       <ul>
-          {category.categories.length > 0 ? renderCategories(category.categories):null}
+        {category.categories.length > 0 ? renderCategories(category.categories) : null}
       </ul>
-  </div>)
-};
+    </div>
+  )
 
-export default Menu;
+}
+
+export default MenuHeader
