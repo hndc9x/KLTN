@@ -6,6 +6,22 @@ import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { signup } from "../../actions";
 import { useEffect } from "react";
+import {
+  CButton,
+  CCard,
+  CCardBody,
+  CCardFooter,
+  CCol,
+  CContainer,
+  CForm,
+  CInput,
+  CInputGroup,
+  CInputGroupPrepend,
+  CInputGroupText,
+  CRow,
+} from "@coreui/react";
+import { VscAccount,VscLock } from "react-icons/vsc";
+
 
 /**
  * @author
@@ -13,7 +29,7 @@ import { useEffect } from "react";
  **/
 
 const Signup = (props) => {
-  const [firstName, setFirstName] = useState("");
+  const [firstName, setFristName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +40,7 @@ const Signup = (props) => {
 
   useEffect(() => {
     if (!user.loading) {
-      setFirstName("");
+      setFristName("");
       setLastName("");
       setEmail("");
       setPassword("");
@@ -53,56 +69,79 @@ const Signup = (props) => {
   }
 
   return (
-    <Layout>
-      <Container>
+    <div className="c-app c-default-layout flex-row align-items-center">
+      <CContainer>
         {user.message}
-        <Row style={{ marginTop: "50px" }}>
-          <Col md={{ span: 6, offset: 3 }}>
-            <Form onSubmit={userSignup}>
-              <Row>
-                <Col md={6}>
-                  <Input
-                    label="First Name"
-                    placeholder="First Name"
-                    value={firstName}
-                    type="text"
-                    onChange={(e) => setFirstName(e.target.value)}
-                  />
-                </Col>
-                <Col md={6}>
-                  <Input
-                    label="Last Name"
-                    placeholder="Last Name"
-                    value={lastName}
-                    type="text"
-                    onChange={(e) => setLastName(e.target.value)}
-                  />
-                </Col>
-              </Row>
-
-              <Input
-                label="Email"
-                placeholder="Email"
-                value={email}
-                type="email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-
-              <Input
-                label="Password"
-                placeholder="Password"
-                value={password}
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </Layout>
+        <CRow className="justify-content-center">
+          <CCol md="9" lg="7" xl="6">
+            <CCard className="mx-4">
+              <CCardBody className="p-4">
+                <CForm onSubmit={userSignup}>
+                  <h1>Register</h1>
+                  <p className="text-muted">Create your account</p>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupPrepend>
+                      <CInputGroupText>
+                        <VscAccount />
+                      </CInputGroupText>
+                    </CInputGroupPrepend>
+                    <CInput
+                      placeholder="First Name"
+                      value={firstName}
+                      type="text"
+                      onChange={(e) => setFristName(e.target.value)}
+                    />
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupPrepend>
+                      <CInputGroupText>
+                        <VscAccount />
+                      </CInputGroupText>
+                    </CInputGroupPrepend>
+                    <CInput
+                      placeholder="Last Name"
+                      value={lastName}
+                      type="text"
+                      onChange={(e) => setLastName(e.target.value)}
+                    />
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupPrepend>
+                      <CInputGroupText>@</CInputGroupText>
+                    </CInputGroupPrepend>
+                    <CInput
+                      placeholder="Email"
+                      value={email}
+                      type="email"
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </CInputGroup>
+                  <CInputGroup className="mb-3">
+                    <CInputGroupPrepend>
+                      <CInputGroupText>
+                        <VscLock />
+                      </CInputGroupText>
+                    </CInputGroupPrepend>
+                    <CInput
+                      placeholder="Password"
+                      value={password}
+                      type="password"
+                      onChange={(e) => setPassword(e.target.value)}
+                      v
+                    />
+                  </CInputGroup>
+                  <CButton color="success" block type="submit">
+                    Create Account
+                  </CButton>
+                </CForm>
+              </CCardBody>
+              <CCardFooter className="p-4">
+              </CCardFooter>
+            </CCard>
+          </CCol>
+        </CRow>
+      </CContainer>
+    </div>
   );
 };
 

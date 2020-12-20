@@ -6,6 +6,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import linearCategories from '../../helpers/linearCategories';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPage } from '../../actions';
+import { CButton } from '@coreui/react';
 
 /**
 * @author
@@ -196,7 +197,8 @@ const NewPage = (props) => {
                 :
                 <>
                     {renderCreatePageModal()}
-                    <button onClick={() => setCreateModal(true)}>Create Page</button>
+                    <CButton color="success" onClick={() => setCreateModal(true)}>Create Page</CButton>
+                    {/* <button onClick={() => setCreateModal(true)}>Create Page</button> */}
                 </>
             }
             
