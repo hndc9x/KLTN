@@ -22,13 +22,16 @@ export const login = (user) => {
                     token, user
                 }
             });
+            alert("Logged in successfully");
         }else{
             if(res.status === 400){
                 dispatch({
                     type: authConstants.LOGIN_FAILURE,
                     payload: { error: res.data.error }
                 });
+                
             }
+          
         }
     }
 }

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Layout from "../../components/Layout";
-import { Container, Form, Row, Col, Button } from "react-bootstrap";
-import Input from "../../components/UI/Input";
 import { login } from "../../actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Link } from "react-router-dom";

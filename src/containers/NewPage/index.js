@@ -7,6 +7,9 @@ import linearCategories from '../../helpers/linearCategories';
 import { useSelector, useDispatch } from 'react-redux';
 import { createPage } from '../../actions';
 import { CButton } from '@coreui/react';
+import {
+    IoIosCreate,
+  } from "react-icons/io";
 
 /**
 * @author
@@ -197,7 +200,7 @@ const NewPage = (props) => {
                 :
                 <>
                     {renderCreatePageModal()}
-                    <CButton color="success" onClick={() => setCreateModal(true)}>Create Page</CButton>
+                    <CButton color="success" onClick={() => setCreateModal(true)}><IoIosCreate/> Create Page</CButton>
                     {/* <button onClick={() => setCreateModal(true)}>Create Page</button> */}
                 </>
             }

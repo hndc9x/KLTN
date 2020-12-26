@@ -7,6 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProductById } from "../../actions";
 import "./style.css";
 import { generatePublicUrl } from "../../urlConfig";
+import { CButton } from "@coreui/react";
+import {
+  IoIosTrash,
+  IoIosCreate,
+  IoIosEye
+} from "react-icons/io";
 
 /**
  * @author
@@ -79,25 +85,19 @@ const Products = (props) => {
           {product.products.length > 0
             ? product.products.map((product) => (
                 <tr key={product._id}>
-                  <td>2</td>
+                  <td>#</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
                   <td>{product.quantity}</td>
                   <td>{product.category.name}</td>
                   <td>
-                    <button onClick={() => showProductDetailsModal(product)}>
-                      info
-                    </button>
-                    <button
-                      onClick={() => {
+                    <CButton color ="info" onClick={() => showProductDetailsModal(product)}><IoIosEye/></CButton>
+                    <CButton color="danger" onClick={() => {
                         const payload = {
                           productId: product._id,
                         };
                         dispatch(deleteProductById(payload));
-                      }}
-                    >
-                      del
-                    </button>
+                      }}><IoIosTrash/></CButton>
                   </td>
                 </tr>
               ))
@@ -235,7 +235,8 @@ const Products = (props) => {
           <Col md={12}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h3>Products</h3>
-              <button onClick={handleShow}>Add</button>
+              <CButton color="success" onClick={handleShow}><IoIosCreate/> Create</CButton>
+              {/* <button onClick={handleShow}>Add</button> */}
             </div>
           </Col>
         </Row>

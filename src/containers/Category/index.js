@@ -15,24 +15,26 @@ import {
   IoIosCheckbox,
   IoIosArrowForward,
   IoIosArrowDown,
-  IoIosAddCircle,
   IoIosTrash,
   IoIosCloudUpload,
+  IoIosCreate,
+  IoIosFolder,
+  IoIosFolderOpen,
+  IoIosDocument
 } from "react-icons/io";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
 import UpdateCategoriesModal from "./components/UpdateCategoriesModal";
 import AddCategoryModal from "./components/AddCategoryModal";
-import "./style.css";
 import {
-  CButtonGroup,
   CButton,
-  CRow,
-  CCol,
-  CCardBody,
   CCard,
+  CCardBody,
   CCardHeader,
   CCardFooter,
+  CCol,
+  CRow,
 } from "@coreui/react";
+import "./style.css"
 
 /**
  * @author
@@ -70,11 +72,11 @@ const Category = (props) => {
 
     form.append("name", categoryName);
     form.append("parentId", parentCategoryId);
-    form.append("categoryImage", categoryImage);
     dispatch(addCategory(form));
     setCategoryName("");
     setParentCategoryId("");
-    setShow(false);
+   
+    alert("Success");    
   };
   const handleShow = () => setShow(true);
 
@@ -208,7 +210,7 @@ const Category = (props) => {
             label: "No",
             color: "primary",
             onClick: () => {
-              alert("no");
+              setDeleteCategoryModal(false);
             },
           },
           {
@@ -238,7 +240,11 @@ const Category = (props) => {
         <CRow>
           <CCol>
             <CCard color="gradient-secondary">
-              <CCardHeader><h3><span>CATEGORY LIST</span></h3></CCardHeader>
+              <CCardHeader>
+                <h3>
+                  <span>CATEGORY LIST</span>
+                </h3>
+              </CCardHeader>
               <CCardBody>
                 <CRow>
                   <Col md={12}>
@@ -254,20 +260,29 @@ const Category = (props) => {
                         halfCheck: <IoIosCheckboxOutline />,
                         expandClose: <IoIosArrowForward />,
                         expandOpen: <IoIosArrowDown />,
+                        parentClose: <IoIosFolder />,
+                        parentOpen : <IoIosFolderOpen />,
+                        leaf : <IoIosDocument/>
                       }}
                     />
                   </Col>
                 </CRow>
               </CCardBody>
-              <CCardFooter >
+              <CCardFooter>
                 <CRow>
-                &emsp;
-                <CButton color="success" onClick={handleShow}>
-                    <IoIosAddCircle /> Create
+                  &emsp;
+                  <CButton color="success" onClick={handleShow}>
+                    <IoIosCreate /> Create
                   </CButton>
-                &emsp;
-                  <CButton color="primary" onClick={updateCategory}><IoIosCloudUpload/> Edit</CButton>&emsp;
-                  <CButton color="danger" onClick={deleteCategory}><IoIosTrash/> Delete</CButton>&emsp;
+                  &emsp;
+                  <CButton color="primary" onClick={updateCategory}>
+                    <IoIosCloudUpload /> Edit
+                  </CButton>
+                  &emsp;
+                  <CButton color="danger" onClick={deleteCategory}>
+                    <IoIosTrash /> Delete
+                  </CButton>
+                  &emsp;
                 </CRow>
               </CCardFooter>
             </CCard>
@@ -284,7 +299,7 @@ const Category = (props) => {
         parentCategoryId={parentCategoryId}
         setParentCategoryId={setParentCategoryId}
         categoryList={categoryList}
-        handleCategoryImage={handleCategoryImage}
+        //handleCategoryImage={handleCategoryImage}
       />
       <UpdateCategoriesModal
         show={updateCategoryModal}
@@ -297,8 +312,8 @@ const Category = (props) => {
         handleCategoryInput={handleCategoryInput}
         categoryList={categoryList}
       />
-      {/* {renderAddCategoryModal()} */}
       {renderDeleteCategoryModal()}
+  
     </Layout>
   );
 };

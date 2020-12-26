@@ -2,7 +2,6 @@ import React from "react";
 import {
   Navbar,
   Nav,
-  NavDropdown,
   Container,
   FormControl,
   Button,
@@ -30,33 +29,11 @@ const Header = (props) => {
     return (
       <Nav>
         <li className="nav-item">
-          {/* <span className="nav-link" onClick={logout}>
-            Signout
-          </span> */}
-          <CButton color="success" onClick={logout}>Signout</CButton>
+          <CButton block variant="outline" color="danger" onClick={logout}>Signout</CButton>
         </li>
       </Nav>
     );
   };
-
-  const renderNonLoggedInLinks = () => {
-    return (
-      <Nav>
-        {/* <Nav.Link href="#deets">Signin</Nav.Link> */}
-        <li className="nav-item">
-          <NavLink to="signin" className="nav-link">
-            Signin
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to="signup" className="nav-link">
-            Signup
-          </NavLink>
-        </li>
-      </Nav>
-    );
-  };
-
   return (
     <Navbar
       collapseOnSelect
@@ -79,7 +56,7 @@ const Header = (props) => {
             <Button variant="outline-light">Search</Button>
           </Form>
           &emsp;
-          {auth.authenticate ? renderLoggedInLinks() : renderNonLoggedInLinks()}
+          {renderLoggedInLinks()}
         </Navbar.Collapse>
       </Container>
     </Navbar>

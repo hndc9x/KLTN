@@ -1,6 +1,8 @@
 .modal-header{
     padding: 5px 15px;
-    background-color: #333;
+    background-color: red;
+    height: 50px;
+    
 }
 .modal-title{
     font-size: 18px;
