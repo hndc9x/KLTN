@@ -4,8 +4,6 @@ const mongoose = require('mongoose');
 const app = express();
 const path = require('path');
 const cors = require('cors');
-// const fileManager = require('./fileManager');
-// const nodemailer = require('nodemailer');
 
 
 //route
@@ -25,20 +23,32 @@ const adminSendEmail = require("./routes/admin/email");
 env.config();
 
 // kết nối mongodb
-// mongodb+srv://myMongoDBUser:<password>@cluster0.4cscp.mongodb.net/<dbname>?retryWrites=true&w=majority
-//mongo
-//const mongoose = require('mongoose')
-const connectDB = async()=>{
-    const connection = await mongoose.connect(process.env.MONGO_URL,{
-        useNewUrlParser:true,
-        useCreateIndex:true,
-        useFindAndModify : false,
-        useUnifiedTopology:true
-    });
-    console.log(`MongoDB Connected: ${connection.connection.host}`)
+// mongodb+srv://root:<password>@cluster0.e5qsb.mongodb.net/<dbname>?retryWrites=true&w=majority
+mongoose.connect(
+    `mongodb+srv://${process.env.MONGODB_DB_USER}:${process.env.MONGODB_DB_PASS}@cluster0.e5qsb.mongodb.net/${process.env.MONGODB_DB_DATABASE}?retryWrites=true&w=majority`, 
+    {
+        useNewUrlParser: true, 
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+    }
+).then(() => {
+    console.log('MongoDB Connected');
+});
 
-}
-connectDB() 
+
+//const mongoose = require('mongoose')
+// const connectDB = async()=>{
+//     const connection = await mongoose.connect(process.env.MONGO_URL,{
+//         useNewUrlParser:true,
+//         useCreateIndex:true,
+//         useFindAndModify : false,
+//         useUnifiedTopology:true
+//     });
+//     console.log(`MongoDB Connected: ${connection.connection.host}`)
+
+// }
+// connectDB() 
 
 app.use(cors());
 app.use(express.json());
@@ -54,32 +64,6 @@ app.use("/api", addressRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", adminOrderRoute);
 app.use("/api", adminSendEmail);
-
-
-//send email
-// const transporter = nodemailer.createTransport({
-//     service : 'gmail',
-//     auth:{
-//         user : process.env.EMAIL,
-//         pass : process.env.PASS
-//     }
-// });
-// fileManager.readJsonFile('./src/email.json').then((jsonObject) => {
-//     console.log(`email list = ${jsonObject["emails"]}`);
-//     const mailOption = {
-//         from : 'hndc9x@gmail.com',
-//         to : jsonObject["emails"],
-//         subject : 'Test chuc nang gui mail',
-//         text : 'Gui email thanh cong'
-//     };
-//     transporter.sendMail(mailOption,(error , info) => {
-//         if (error) {
-//             console.log(error);
-//         }else{
-//             console.log('Email sent ' + info.response);
-//         }
-//     });
-// });
 
 
 app.listen(process.env.PORT,()=>{
