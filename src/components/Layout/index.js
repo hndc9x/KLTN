@@ -13,7 +13,7 @@ import { IoIosHome  ,IoIosAlbums ,IoIosBriefcase ,IoIosDocument  ,IoIosApps ,IoM
 const Layout = (props) => {
   return(
     <>
-       <Header />
+       <Header/>
        {
          props.sidebar ?
          <Container fluid>
@@ -35,9 +35,7 @@ const Layout = (props) => {
         </Container>
         :
         props.children
-       }
-        
-        
+       }     
     </>
    )
 

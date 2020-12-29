@@ -1,8 +1,19 @@
-.modal-header{
+.modal-header-success{
     padding: 5px 15px;
-    background-color: red;
+    background-color: #28a745;
     height: 50px;
     
+}
+.modal-header-edit{
+    padding: 5px 15px;
+    background-color: #007bff;
+    height: 50px;
+    
+}
+.modal-header-delete{
+    padding: 5px 15px;
+    background-color: #dc3545;
+    height: 50px; 
 }
 .modal-title{
     font-size: 18px;

@@ -28,6 +28,6 @@
     text-decoration: none;
 }
 .sidebar ul li a.active{
-    background: blue; 
+    background: #343a40; 
     color: #fff;
 }

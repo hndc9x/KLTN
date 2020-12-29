@@ -20,21 +20,33 @@ import {
   IoIosCreate,
   IoIosFolder,
   IoIosFolderOpen,
-  IoIosDocument
+  IoIosDocument,
 } from "react-icons/io";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
 import UpdateCategoriesModal from "./components/UpdateCategoriesModal";
 import AddCategoryModal from "./components/AddCategoryModal";
 import {
   CButton,
-  CCard,
   CCardBody,
+  CCol,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+  CRow,
+  CLabel,
+  CFormGroup,
+  CInputFile,
+  CInvalidFeedback,
+  CValidFeedback,
+  CForm,
+  CInput,
+  CCard,
   CCardHeader,
   CCardFooter,
-  CCol,
-  CRow,
 } from "@coreui/react";
-import "./style.css"
+import "./style.css";
 
 /**
  * @author
@@ -42,11 +54,13 @@ import "./style.css"
  **/
 
 const Category = (props) => {
+  //modal
+  const [addCategoryModal, setAddCategoryModal] = useState(false);
+
   const category = useSelector((state) => state.category);
   const [categoryName, setCategoryName] = useState("");
   const [parentCategoryId, setParentCategoryId] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
-  const [show, setShow] = useState(false);
   const [checked, setChecked] = useState([]);
   const [expanded, setExpanded] = useState([]);
   const [checkedArray, setCheckedArray] = useState([]);
@@ -55,18 +69,18 @@ const Category = (props) => {
   const [deleteCategoryModal, setDeleteCategoryModal] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!category.loading) {
-      setShow(false);
-    }
-  }, [category.loading]);
+  // useEffect(() => {
+  //   if (!category.loading) {
+  //     setShow(false);
+  //   }
+  // }, [category.loading]);
 
   const handleClose = () => {
     const form = new FormData();
 
     if (categoryName === "") {
       alert("Category name is required");
-      setShow(false);
+      setAddCategoryModal(false);
       return;
     }
 
@@ -75,10 +89,9 @@ const Category = (props) => {
     dispatch(addCategory(form));
     setCategoryName("");
     setParentCategoryId("");
-   
-    alert("Success");    
+
+    alert("Success");
   };
-  const handleShow = () => setShow(true);
 
   const renderCategories = (categories) => {
     let myCategories = [];
@@ -199,6 +212,75 @@ const Category = (props) => {
     setDeleteCategoryModal(false);
   };
 
+  const renderAddCategoriesModal = () => {
+    return (
+      <CModal
+        show={addCategoryModal}
+        onClose={() => setAddCategoryModal(!addCategoryModal)}
+        color="success"
+      >
+        <CModalHeader className="modal-header-success" closeButton>
+          <CModalTitle>Add New Category</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <h3>Enter Fill Information</h3>
+          <CForm className="was-validated">
+            <CFormGroup>
+              <CInput
+                value={categoryName}
+                placeholder={`Category Name`}
+                onChange={(e) => setCategoryName(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+          </CForm>
+          <select
+            className="form-control form-control-sm"
+            value={parentCategoryId}
+            onChange={(e) => setParentCategoryId(e.target.value)}
+          >
+            <option>Select category</option>
+            {categoryList.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.name}
+              </option>
+            ))}
+          </select>
+          <p></p>
+          <CCol xs="12" md="9">
+            <CInputFile
+              custom
+              id="custom-file-input"
+              name="categoryImage"
+              onChange={handleCategoryImage}
+            />
+            <CLabel htmlFor="custom-file-input" variant="custom-file">
+              Choose file...
+            </CLabel>
+          </CCol>
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="secondary"
+            onClick={() => setAddCategoryModal(!addCategoryModal)}
+          >
+            Cancel
+          </CButton>
+          <CButton color="success" onClick={handleClose}>
+            OK
+          </CButton>{" "}
+        </CModalFooter>
+      </CModal>
+    );
+  };
   const renderDeleteCategoryModal = () => {
     return (
       <Modal
@@ -261,8 +343,8 @@ const Category = (props) => {
                         expandClose: <IoIosArrowForward />,
                         expandOpen: <IoIosArrowDown />,
                         parentClose: <IoIosFolder />,
-                        parentOpen : <IoIosFolderOpen />,
-                        leaf : <IoIosDocument/>
+                        parentOpen: <IoIosFolderOpen />,
+                        leaf: <IoIosDocument />,
                       }}
                     />
                   </Col>
@@ -271,7 +353,7 @@ const Category = (props) => {
               <CCardFooter>
                 <CRow>
                   &emsp;
-                  <CButton color="success" onClick={handleShow}>
+                  <CButton color="success"  onClick={() => setAddCategoryModal(!addCategoryModal)}>
                     <IoIosCreate /> Create
                   </CButton>
                   &emsp;
@@ -289,7 +371,7 @@ const Category = (props) => {
           </CCol>
         </CRow>
       </Container>
-      <AddCategoryModal
+      {/* <AddCategoryModal className = "success"
         show={show}
         handleClose={() => setShow(false)}
         onSubmit={handleClose}
@@ -311,9 +393,16 @@ const Category = (props) => {
         checkedArray={checkedArray}
         handleCategoryInput={handleCategoryInput}
         categoryList={categoryList}
-      />
+      /> */}
       {renderDeleteCategoryModal()}
-  
+      {renderAddCategoriesModal()}
+      <CButton
+        color="success"
+        onClick={() => setAddCategoryModal(!addCategoryModal)}
+        className="mr-1"
+      >
+        Success modal
+      </CButton>
     </Layout>
   );
 };

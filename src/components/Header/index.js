@@ -39,7 +39,7 @@ const Header = (props) => {
       collapseOnSelect
       fixed="top"
       expand="lg"
-      bg="primary"
+      bg="dark"
       variant="dark"
       style={{ zIndex: 1 }}
     >
