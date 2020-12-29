@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./style.css";
-import flipkartLogo from "../../images/logo/logo.jpg";
-import goldenStar from "../../images/logo/golden-star.png";
+import Logo from "../../images/logo/logo.jpg";
 import { IoIosArrowDown, IoIosCart, IoIosSearch } from "react-icons/io";
 import {
   Modal,
@@ -109,7 +108,6 @@ const Header = (props) => {
         }
         menus={[
           { label: "My Profile", href: "", icon: null },
-          { label: "Flipkart Plus Zone", href: "", icon: null },
           {
             label: "Orders",
             href: `/account/orders`,
@@ -118,9 +116,6 @@ const Header = (props) => {
               !auth.authenticate && setLoginModal(true);
             },
           },
-          { label: "Wishlist", href: "", icon: null },
-          { label: "Rewards", href: "", icon: null },
-          { label: "Gift Cards", href: "", icon: null },
         ]}
         firstMenu={
           <div className="firstmenu">
@@ -211,12 +206,12 @@ const Header = (props) => {
         {/* Logo  */}
         <div className="logo">
           <a href="">
-            <img src={flipkartLogo} className="logoimage" alt="" />
+            <img src={Logo} className="logoimage" alt="" />
           </a>
           <a style={{ marginTop: "-10px" }}>
             <span className="exploreText">Explore</span>
             <span className="plusText">Plus</span>
-            <img src={goldenStar} className="goldenStar" alt="" />
+  
           </a>
         </div>
         {/* logo ends here */}

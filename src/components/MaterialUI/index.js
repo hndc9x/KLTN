@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.css";
 
 /**
- * @author Rizwan Khan
+ * @author 
  * @function
  **/
 

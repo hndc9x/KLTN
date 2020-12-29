@@ -12,7 +12,7 @@ import Card from '../../../components/UI/Card';
 **/
 
 const ProductPage = (props) => {
-
+    const url = "http://localhost:2000";
     const dispatch = useDispatch();
     const product = useSelector(state => state.product);
     const { page } = product;
@@ -37,10 +37,10 @@ const ProductPage = (props) => {
                     page.banners && page.banners.map((banner, index) => 
                         <a 
                             key={index}
-                            style={{ display: 'block' }}
+                            style={{ display: 'block' , width:100}}
                             href={banner.navigateTo}
                         >
-                            <img src={banner.img} alt="" />
+                            <img src={(`${url}${banner.img}`)} alt="" />
                         </a>
                     )
                 }
@@ -56,15 +56,15 @@ const ProductPage = (props) => {
                         <Card 
                             key={index}
                             style={{
-                                width: '400px',
-                                height: '200px',
+                                width: '200px',
+                                height: '150px',
                                 margin: '5px'
                             }}
                         >
                             <img style={{
                                 width: '100%',
                                 height: '100%'
-                            }} src={product.img} alt="" />
+                            }} src={`${url}${product.img}`} alt="" />
                         </Card>
                     )
                 }

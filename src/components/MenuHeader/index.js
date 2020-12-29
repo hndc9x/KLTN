@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './style.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllCategory } from '../../actions';
+import { IoIosArrowDown } from "react-icons/io";
 
 /**
 * @author
@@ -21,8 +22,8 @@ const MenuHeader = (props) => {
   const renderCategories = (categories) => {
     let myCategories = [];
     for (let category of categories) {
-      myCategories.push(
-        <li key={category.name}>
+      myCategories.push( 
+        <li  key={category.name}>
           {
             category.parentId ? <a
               href={`/${category.slug}?cid=${category._id}&type=${category.type}`}>
@@ -40,6 +41,7 @@ const MenuHeader = (props) => {
     <div className="menuHeader">
       <ul>
         {category.categories.length > 0 ? renderCategories(category.categories) : null}
+        
       </ul>
     </div>
   )
