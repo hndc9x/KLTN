@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "",
+    "subtitle": "",
+    "image": "/assets/img/slider/slider1.jpg",
+    "url": "/shop-grid-standard"
+  },
+  {
+    "id": 2,
+    "title": "Enjoy This Offer Today",
+    "subtitle": "New Collection <br>Sale 20%",
+    "image": "/assets/img/slider/slider-16.jpg",
+    "url": "/shop-grid-standard"
+  }
+]
