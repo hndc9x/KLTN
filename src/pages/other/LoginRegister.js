@@ -51,14 +51,14 @@ const LoginRegister = ({ location }) => {
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };
-    // if (
-    //   firstName === "" ||
-    //   lastName === "" ||
-    //   email === "" ||
-    //   password === ""
-    // ) {
-    //   return;
-    // }
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      return;
+    }
 
     dispatch(signup(user));
   };

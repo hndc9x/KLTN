@@ -6,14 +6,23 @@ import Card from "react-bootstrap/Card";
 import Accordion from "react-bootstrap/Accordion";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
+import {  useSelector } from "react-redux";
 
 const MyAccount = ({ location }) => {
   const { pathname } = location;
 
+
+  const auth = useSelector(state => state.auth);
+
+  const firstName = auth.user.firstName;
+  const lastName = auth.user.lastName;
+  const email = auth.user.email;
+  
+
   return (
     <Fragment>
       <MetaTags>
-        <title>Flone | My Account</title>
+        <title>Hello | My Account</title>
         <meta
           name="description"
           content="Compare page of flone react minimalist eCommerce template."
@@ -36,7 +45,7 @@ const MyAccount = ({ location }) => {
                       <Card.Header className="panel-heading">
                         <Accordion.Toggle variant="link" eventKey="0">
                           <h3 className="panel-title">
-                            <span>1 .</span> Edit your account information{" "}
+                            <span>1 .</span> View your account information{" "}
                           </h3>
                         </Accordion.Toggle>
                       </Card.Header>
@@ -45,45 +54,32 @@ const MyAccount = ({ location }) => {
                           <div className="myaccount-info-wrapper">
                             <div className="account-info-wrapper">
                               <h4>My Account Information</h4>
-                              <h5>Your Personal Details</h5>
                             </div>
                             <div className="row">
                               <div className="col-lg-6 col-md-6">
                                 <div className="billing-info">
                                   <label>First Name</label>
-                                  <input type="text" />
+                                  <input type="text"  value={firstName} readOnly />
                                 </div>
                               </div>
                               <div className="col-lg-6 col-md-6">
                                 <div className="billing-info">
                                   <label>Last Name</label>
-                                  <input type="text" />
+                                  <input type="text"  value={lastName} readOnly/>
                                 </div>
                               </div>
                               <div className="col-lg-12 col-md-12">
                                 <div className="billing-info">
                                   <label>Email Address</label>
-                                  <input type="email" />
-                                </div>
-                              </div>
-                              <div className="col-lg-6 col-md-6">
-                                <div className="billing-info">
-                                  <label>Telephone</label>
-                                  <input type="text" />
-                                </div>
-                              </div>
-                              <div className="col-lg-6 col-md-6">
-                                <div className="billing-info">
-                                  <label>Fax</label>
-                                  <input type="text" />
+                                  <input type="email"  value={email} readOnly />
                                 </div>
                               </div>
                             </div>
-                            <div className="billing-back-btn">
+                            {/* <div className="billing-back-btn">
                               <div className="billing-btn">
                                 <button type="submit">Continue</button>
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                         </Card.Body>
                       </Accordion.Collapse>
@@ -114,49 +110,6 @@ const MyAccount = ({ location }) => {
                                 <div className="billing-info">
                                   <label>Password Confirm</label>
                                   <input type="password" />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="billing-back-btn">
-                              <div className="billing-btn">
-                                <button type="submit">Continue</button>
-                              </div>
-                            </div>
-                          </div>
-                        </Card.Body>
-                      </Accordion.Collapse>
-                    </Card>
-                    <Card className="single-my-account mb-20">
-                      <Card.Header className="panel-heading">
-                        <Accordion.Toggle variant="link" eventKey="2">
-                          <h3 className="panel-title">
-                            <span>3 .</span> Modify your address book entries{" "}
-                          </h3>
-                        </Accordion.Toggle>
-                      </Card.Header>
-                      <Accordion.Collapse eventKey="2">
-                        <Card.Body>
-                          <div className="myaccount-info-wrapper">
-                            <div className="account-info-wrapper">
-                              <h4>Address Book Entries</h4>
-                            </div>
-                            <div className="entries-wrapper">
-                              <div className="row">
-                                <div className="col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
-                                  <div className="entries-info text-center">
-                                    <p>Farhana hayder (shuvo) </p>
-                                    <p>hastech </p>
-                                    <p> Road#1 , Block#c </p>
-                                    <p> Rampura. </p>
-                                    <p>Dhaka </p>
-                                    <p>Bangladesh </p>
-                                  </div>
-                                </div>
-                                <div className="col-lg-6 col-md-6 d-flex align-items-center justify-content-center">
-                                  <div className="entries-edit-delete text-center">
-                                    <button className="edit">Edit</button>
-                                    <button>Delete</button>
-                                  </div>
                                 </div>
                               </div>
                             </div>

@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import MenuCart from "./sub-components/MenuCart";
 import { deleteFromCart } from "../../redux/actions/cartActions";
+import {signout} from '../../redux/actions/authActions';
 
 const IconGroup = ({
   currency,
@@ -23,6 +24,42 @@ const IconGroup = ({
     );
     offcanvasMobileMenu.classList.add("active");
   };
+  
+  const dispatch = useDispatch();
+
+  // ham dang xuat 
+  const Logout = () => {
+    dispatch(signout());
+  }
+  const auth = useSelector(state => state.auth);
+  const renderRule = () => {
+      if(auth.authenticate){
+        return(
+          <div className="account-dropdown">
+          <ul>
+            <li>
+              <Link onClick={Logout} to={process.env.PUBLIC_URL + "/login-register"}>Logout</Link>
+            </li>
+            <li>
+              <Link to={process.env.PUBLIC_URL + "/my-account"}>
+                my account
+              </Link>
+            </li>
+          </ul>
+        </div>
+        );
+      }else{
+        return(
+          <div className="account-dropdown">
+          <ul>
+            <li>
+              <Link  to={process.env.PUBLIC_URL + "/login-register"}>Login</Link>
+            </li>
+          </ul>
+        </div>
+        );
+      }
+  } 
 
   return (
     <div
@@ -48,23 +85,8 @@ const IconGroup = ({
         >
           <i className="pe-7s-user-female" />
         </button>
-        <div className="account-dropdown">
-          <ul>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/login-register"}>Login</Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/login-register"}>
-                Register
-              </Link>
-            </li>
-            <li>
-              <Link to={process.env.PUBLIC_URL + "/my-account"}>
-                my account
-              </Link>
-            </li>
-          </ul>
-        </div>
+        {/* list */}
+       {renderRule()}
       </div>
       <div className="same-style header-compare">
         <Link to={process.env.PUBLIC_URL + "/compare"}>

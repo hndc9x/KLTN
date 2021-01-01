@@ -1,14 +1,21 @@
 import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import MetaTags from "react-meta-tags";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-
+import {sendEmail} from "../../redux/actions/emailAction";
 
 const Contact = ({ location }) => {
   const { pathname } = location;
 
+  const [subject , setSubject] = useState("");
+  const [text , setText] = useState("");
+   
+  const feedBack = () => {
+     const email = {subject , text};
+     sendEmail(email);
+  }
   return (
     <Fragment>
       <MetaTags>
@@ -96,30 +103,28 @@ const Contact = ({ location }) => {
               <div className="col-lg-8 col-md-7">
                 <div className="contact-form">
                   <div className="contact-title mb-30">
-                    <h2>Get In Touch</h2>
+                    <h2>Feed Back</h2>
                   </div>
                   <form className="contact-form-style">
                     <div className="row">
-                      <div className="col-lg-6">
-                        <input name="name" placeholder="Name*" type="text" />
-                      </div>
-                      <div className="col-lg-6">
-                        <input name="email" placeholder="Email*" type="email" />
-                      </div>
                       <div className="col-lg-12">
                         <input
+                          value = {subject}
                           name="subject"
                           placeholder="Subject*"
                           type="text"
+                          onChange = {(e) => setSubject(e.target.value)}
                         />
                       </div>
                       <div className="col-lg-12">
                         <textarea
+                          value = {text}
                           name="message"
                           placeholder="Your Message*"
-                          defaultValue={""}
+                          onChange = {(e) => setText(e.target.value)}
                         />
-                        <button className="submit" type="submit">
+                        <p></p>
+                        <button className="submit" onClick={feedBack} >
                           SEND
                         </button>
                       </div>
