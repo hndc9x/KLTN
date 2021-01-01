@@ -4,7 +4,7 @@ import MetaTags from "react-meta-tags";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
-import LocationMap from "../../components/contact/LocationMap";
+
 
 const Contact = ({ location }) => {
   const { pathname } = location;
@@ -27,9 +27,6 @@ const Contact = ({ location }) => {
         <Breadcrumb />
         <div className="contact-area pt-100 pb-100">
           <div className="container">
-            <div className="contact-map mb-10">
-              <LocationMap latitude="47.444" longitude="-122.176" />
-            </div>
             <div className="custom-row-2">
               <div className="col-lg-4 col-md-5">
                 <div className="contact-info-wrap">
@@ -38,8 +35,8 @@ const Contact = ({ location }) => {
                       <i className="fa fa-phone" />
                     </div>
                     <div className="contact-info-dec">
-                      <p>+012 345 678 102</p>
-                      <p>+012 345 678 102</p>
+                      <p>+ 0964 183 512</p>
+                      <p>+ 0387 094 975</p>
                     </div>
                   </div>
                   <div className="single-contact-info">
@@ -48,10 +45,10 @@ const Contact = ({ location }) => {
                     </div>
                     <div className="contact-info-dec">
                       <p>
-                        <a href="mailto:urname@email.com">urname@email.com</a>
+                        <a href="mailto:hndc9x@gmail.com">hndc9x@gmail.com</a>
                       </p>
                       <p>
-                        <a href="//urwebsitenaem.com">urwebsitenaem.com</a>
+                        <a href="http://localhost:3000/">website</a>
                       </p>
                     </div>
                   </div>
@@ -61,7 +58,7 @@ const Contact = ({ location }) => {
                     </div>
                     <div className="contact-info-dec">
                       <p>Address goes here, </p>
-                      <p>street, Crossroad 123.</p>
+                      <p>1 Vo Van Ngan, Thu Duc</p>
                     </div>
                   </div>
                   <div className="contact-social text-center">

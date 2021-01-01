@@ -1,15 +1,39 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
 import MetaTags from "react-meta-tags";
-import { Link ,Redirect} from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import Tab from "react-bootstrap/Tab";
 import Nav from "react-bootstrap/Nav";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { useDispatch, useSelector } from "react-redux";
-import { login, signup as _signup } from "../../redux/actions";
+import { login, signup, signupG as _signupG } from "../../redux/actions";
+import GoogleLogin from "react-google-login";
+import "./style.css";
+
 const LoginRegister = ({ location }) => {
+  const responseGoogle = (response) => {
+    console.log(response);
+    console.log(response.profileObj.email);
+    const firstName = response.profileObj.familyName;
+    const lastName = response.profileObj.givenName;
+    const email = response.profileObj.email;
+    const password = response.profileObj.googleId;
+
+    const userG = { firstName, lastName, email, password };
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      password === ""
+    ) {
+      return;
+    }
+    dispatch(_signupG(userG));
+  };
+
+
   const { pathname } = location;
 
   const [firstName, setFirstName] = useState("");
@@ -17,7 +41,7 @@ const LoginRegister = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-   const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -27,16 +51,16 @@ const LoginRegister = ({ location }) => {
 
   const userSignup = () => {
     const user = { firstName, lastName, email, password };
-    if (
-      firstName === "" ||
-      lastName === "" ||
-      email === "" ||
-      password === ""
-    ) {
-      return;
-    }
+    // if (
+    //   firstName === "" ||
+    //   lastName === "" ||
+    //   email === "" ||
+    //   password === ""
+    // ) {
+    //   return;
+    // }
 
-    dispatch(_signup(user));
+    dispatch(signup(user));
   };
 
   const userLogin = () => {
@@ -82,27 +106,44 @@ const LoginRegister = ({ location }) => {
                         <div className="login-form-container">
                           <div className="login-register-form">
                             <form onSubmit={userLogin}>
-                              <input 
-                                 value={email}
-                                 type="email" 
-                                 placeholder="Email" 
-                                 onChange={(e)=> setEmail(e.target.value)}
-                                 />
-                              <input 
+                              <input
+                                value={email}
+                                type="email"
+                                placeholder="Email"
+                                onChange={(e) => setEmail(e.target.value)}
+                              />
+                              <input
                                 value={password}
-                                type="password" 
-                                placeholder="Password" 
+                                type="password"
+                                placeholder="Password"
                                 onChange={(e) => setPassword(e.target.value)}
-                                />
+                              />
+                              <GoogleLogin
+                                className="LoginByGoogle"
+                                clientId="771497100146-lfdmdp81b33jls8tt23mtok4uuo02na9.apps.googleusercontent.com"
+                                buttonText="Login in with Google"
+                                onSuccess={responseGoogle}
+                                onFailure={responseGoogle}
+                                cookiePolicy={"single_host_origin"}
+                              />
+                              {/* <FacebookLogin
+                                appId="150952263230241"
+                                autoLoad={true}
+                                fields="name,email,picture"
+                                //onClick={componentClicked}
+                                callback={responseFacebook}
+                              /> */}
+                              ,
                               <div className="button-box">
                                 <div className="login-toggle-btn">
                                   <input type="checkbox" />
                                   <label className="ml-10">Remember me</label>
-                                  <Link to={process.env.PUBLIC_URL + "/"}>
+                                  {/* <Link to={process.env.PUBLIC_URL + "/"}>
                                     Forgot Password?
-                                  </Link>
+                                  </Link> */}
                                 </div>
-                                <button type = "submit">
+                                ,
+                                <button type="submit">
                                   <span>Login</span>
                                 </button>
                               </div>

@@ -7,7 +7,6 @@ import ProductSliderTwo from "../../wrappers/product/ProductSliderTwo";
 import TestimonialOne from "../../wrappers/testimonial/TestimonialOne";
 import NewsletterThree from "../../wrappers/newsletter/NewsletterThree";
 
-
 const HomeFlowerShopTwo = () => {
   return (
     <Fragment>
@@ -27,10 +26,10 @@ const HomeFlowerShopTwo = () => {
         {/* hero slider */}
         <HeroSliderTwentySix spaceLeftClass="ml-70" spaceRightClass="mr-70" />
         {/* feature icon */}
-       
+
         {/* tab product */}
         <TabProductSeventeen category="flower" spaceBottomClass="pb-100" />
-        
+
         {/* product slider */}
         <ProductSliderTwo category="flower" spaceBottomClass="pb-100" />
         {/* testimonial */}
