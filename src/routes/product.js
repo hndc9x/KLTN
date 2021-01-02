@@ -40,10 +40,7 @@ router.delete(
   deleteProductById
 );
 router.post(
-  "/product/getProducts",
-  requireSignin,
-  adminMiddleware,
-  getProducts
+  "/product/getProducts", getProducts
 );
 
 module.exports = router;

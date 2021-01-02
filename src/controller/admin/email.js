@@ -11,10 +11,10 @@ exports.sendEmail = (req,res) => {
    // console.log(`email list = ${jsonObject["emails"]}`);
     const mailOption = {
         from : process.env.EMAIL,
-        to : req.body.emails,
+        to : process.env.MAINEMAIL,
         subject : req.body.subject,
-       // text : req.body.text
-       html : `<h2>${req.body.title}</h2> <p>${req.body.content}</p>`
+        text : req.body.text
+       //html : `<h2>${req.body.title}</h2> <p>${req.body.content}</p>`
     };
     transporter.sendMail(mailOption,(error , info) => {
         if (error) {

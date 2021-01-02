@@ -1,5 +1,12 @@
 const mongoose = require('mongoose');
 const productSchema = new mongoose.Schema({
+    id:{
+        type:String
+    },
+    sku:{
+        type:String,
+        default:"masku"
+    },
     name: { 
         type: String, 
         required: true, 
@@ -14,26 +21,47 @@ const productSchema = new mongoose.Schema({
         type: Number, 
         required: true 
     },
-    quantity: {
+    discount:{
+        type:Number,
+        required:true
+    },
+    offerEnd:{
+        type : String,
+        default : "2020"
+    },
+    new : {
+        type : Boolean,
+        default : true
+    },
+    saleCount: {
         type: Number,
         required: true
     },
-    description: {
+    category:[
+    ],
+    image: [
+       
+    ],
+    color :{
+        type:String,
+    },
+    stock:{
+        type: String
+    },
+    // productPictures: [
+    //     { img: { type: String } }
+    // ],
+    shortDescription :{
         type: String,
         required: true,
         trim: true
     },
-    offer: { type: Number },
-    productPictures: [
-        { img: { type: String } }
-    ],
-    reviews: [
-        {
-            userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-            review: String
-        }
-    ],
-    category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+    fullDescription: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    //category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     updatedAt: Date,
 
