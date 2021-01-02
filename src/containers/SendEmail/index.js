@@ -17,7 +17,7 @@ const SendEmail = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (emails == "" || subject == "" || title == "" || content == "") {
+    if (emails === "" || subject === "" || title === "" || content === "") {
       alert("Send Email Fail");
     }
     else{

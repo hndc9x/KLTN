@@ -1,5 +1,4 @@
 import {
-  initialDataConstants,
   categoryConstansts,
   productConstants,
   orderConstants,

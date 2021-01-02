@@ -1,18 +1,28 @@
 import React, { useState } from "react";
 import Layout from "../../components/Layout";
 import { Container, Row, Col, Table } from "react-bootstrap";
-import Input from "../../components/UI/Input";
-import Modal from "../../components/UI/Modal";
 import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProductById } from "../../actions";
 import "./style.css";
 import { generatePublicUrl } from "../../urlConfig";
-import { CButton } from "@coreui/react";
+import { IoIosTrash, IoIosCreate, IoIosEye } from "react-icons/io";
 import {
-  IoIosTrash,
-  IoIosCreate,
-  IoIosEye
-} from "react-icons/io";
+  CButton,
+  CForm,
+  CCol,
+  CModal,
+  CModalBody,
+  CModalFooter,
+  CModalHeader,
+  CModalTitle,
+  CLabel,
+  CFormGroup,
+  CInputFile,
+  CInput,
+  CInvalidFeedback,
+  CValidFeedback,
+} from "@coreui/react";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 /**
  * @author
@@ -20,22 +30,20 @@ import {
  **/
 
 const Products = (props) => {
+  //modal
+  const [addProductModal, setAddProductModal] = useState("");
+  const [productDetailModal, setProductDetailModal] = useState(false);
+
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [productPictures, setProductPictures] = useState([]);
-  const [show, setShow] = useState(false);
-  const [productDetailModal, setProductDetailModal] = useState(false);
   const [productDetails, setProductDetails] = useState(null);
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
-
-  const handleClose = () => {
-    setShow(false);
-  };
 
   const submitProductForm = () => {
     const form = new FormData();
@@ -49,9 +57,9 @@ const Products = (props) => {
       form.append("productPicture", pic);
     }
 
-    dispatch(addProduct(form)).then(() => setShow(false));
+    dispatch(addProduct(form)).then(() => setAddProductModal(!addProductModal));
   };
-  const handleShow = () => setShow(true);
+  const handleShow = () => setAddProductModal(true);
 
   const createCategoryList = (categories, options = []) => {
     for (let category of categories) {
@@ -73,11 +81,11 @@ const Products = (props) => {
       <Table style={{ fontSize: 12 }} responsive="sm">
         <thead>
           <tr>
-            <th>#</th>
             <th>Name</th>
             <th>Price</th>
-            <th>Quantity</th>
+            <th>Discount</th>
             <th>Category</th>
+            <th>Discount</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -85,19 +93,31 @@ const Products = (props) => {
           {product.products.length > 0
             ? product.products.map((product) => (
                 <tr key={product._id}>
-                  <td>#</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
+                  <td>{product.discount}</td>
                   <td>{product.quantity}</td>
                   <td>{product.category.name}</td>
+                  
+                
                   <td>
-                    <CButton color ="info" onClick={() => showProductDetailsModal(product)}><IoIosEye/></CButton>
-                    <CButton color="danger" onClick={() => {
+                    <CButton
+                      color="info"
+                      onClick={() => showProductDetailsModal(product)}
+                    >
+                      <IoIosEye />
+                    </CButton>
+                    <CButton
+                      color="danger"
+                      onClick={() => {
                         const payload = {
                           productId: product._id,
                         };
                         dispatch(deleteProductById(payload));
-                      }}><IoIosTrash/></CButton>
+                      }}
+                    >
+                      <IoIosTrash />
+                    </CButton>
                   </td>
                 </tr>
               ))
@@ -109,125 +129,199 @@ const Products = (props) => {
 
   const renderAddProductModal = () => {
     return (
-      <Modal
-        show={show}
-        handleClose={handleClose}
-        modalTitle={"Add New Product"}
-        onSubmit={submitProductForm}
+      <CModal
+        show={addProductModal}
+        onClose={() => setAddProductModal(!addProductModal)}
       >
-        <Input
-          label="Name"
-          value={name}
-          placeholder={`Product Name`}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Input
-          label="Quantity"
-          value={quantity}
-          placeholder={`Quantity`}
-          onChange={(e) => setQuantity(e.target.value)}
-        />
-        <Input
-          label="Price"
-          value={price}
-          placeholder={`Price`}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        <Input
-          label="Description"
-          value={description}
-          placeholder={`Description`}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <select
-          className="form-control"
-          value={categoryId}
-          onChange={(e) => setCategoryId(e.target.value)}
-        >
-          <option>select category</option>
-          {createCategoryList(category.categories).map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.name}
-            </option>
-          ))}
-        </select>
-        {productPictures.length > 0
-          ? productPictures.map((pic, index) => (
-              <div key={index}>{pic.name}</div>
-            ))
-          : null}
-        <input
-          type="file"
-          name="productPicture"
-          onChange={handleProductPictures}
-        />
-      </Modal>
+        <CModalHeader className="modal-header-success" closeButton>
+          <CModalTitle>Add New Product</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <h3>Enter Fill Information</h3>
+          <CForm className="was-validated">
+            <CFormGroup>
+              <CInput
+                placeholder="Product Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <CInput
+                placeholder="Quantity"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <CInput
+                placeholder="Price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+            <CFormGroup>
+              <CInput
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="form-control-warning"
+                id="inputWarning2i"
+                required
+              />
+              <CInvalidFeedback className="help-block">
+                Please provide a valid information
+              </CInvalidFeedback>
+              <CValidFeedback className="help-block">
+                Input provided
+              </CValidFeedback>
+            </CFormGroup>
+          </CForm>
+          <CFormGroup>
+            <select
+              className="form-control"
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+            >
+              <option>Select Category</option>
+              {createCategoryList(category.categories).map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+          </CFormGroup>
+          {productPictures.length > 0
+            ? productPictures.map((pic, index) => (
+                <div key={index}>{pic.name}</div>
+              ))
+            : null}
+          <CFormGroup>
+            <CCol xs="12" md="9">
+              <CInputFile
+                custom
+                id="custom-file-input"
+                name="categoryImage"
+                onChange={handleProductPictures}
+              />
+              <CLabel htmlFor="custom-file-input" variant="custom-file">
+                Choose File
+              </CLabel>
+            </CCol>
+          </CFormGroup>
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="secondary"
+            onClick={() => setAddProductModal(!addProductModal)}
+          >
+            Cancel
+          </CButton>
+          <CButton color="success" onClick={submitProductForm}>
+            OK
+          </CButton>{" "}
+        </CModalFooter>
+      </CModal>
     );
   };
-
-  const handleCloseProductDetailsModal = () => {
-    setProductDetailModal(false);
-  };
-
   const showProductDetailsModal = (product) => {
     setProductDetails(product);
     setProductDetailModal(true);
   };
-
   const renderProductDetailsModal = () => {
     if (!productDetails) {
       return null;
     }
-
     return (
-      <Modal
+      <CModal
         show={productDetailModal}
-        handleClose={handleCloseProductDetailsModal}
-        modalTitle={"Product Details"}
-        size="lg"
+        onClose={() => setProductDetailModal(!productDetailModal)}
       >
-        <Row>
-          <Col md="6">
-            <label className="key">Name</label>
-            <p className="value">{productDetails.name}</p>
-          </Col>
-          <Col md="6">
-            <label className="key">Price</label>
-            <p className="value">{productDetails.price}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="6">
-            <label className="key">Quantity</label>
-            <p className="value">{productDetails.quantity}</p>
-          </Col>
-          <Col md="6">
-            <label className="key">Category</label>
-            <p className="value">{productDetails.category.name}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col md="12">
-            <label className="key">Description</label>
-            <p className="value">{productDetails.description}</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <label className="key">Product Pictures</label>
-            <div style={{ display: "flex" }}>
+        <CModalHeader className="modal-header-edit" closeButton>
+          <CModalTitle>Product Details</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <label className="key">Name</label>
+          <p className="value">{productDetails.name}</p>
+          <label className="key">Price</label>
+          <p className="value">{productDetails.price}</p>
+          <label className="key">Quantity</label>
+          <p className="value">{productDetails.quantity}</p>
+          <label className="key">Category</label>
+          <p className="value">{productDetails.category.name}</p>
+          <label className="key">Product Pictures</label>
+          <Row>
+            <Col style={{ display: `flex` }}>
               {productDetails.productPictures.map((picture) => (
                 <div className="productImgContainer">
-                  {/* <img src={ picture.img} alt="" /> */}
                   <img src={generatePublicUrl(picture.img)} />
                 </div>
               ))}
-            </div>
-          </Col>
-        </Row>
-      </Modal>
+            </Col>
+          </Row>
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="secondary"
+            onClick={() => setProductDetailModal(!productDetailModal)}
+          >
+            Cancel
+          </CButton>
+        </CModalFooter>
+      </CModal>
     );
   };
+  // const columns = [
+  //   {
+  //     dataField: "_id",
+  //     text: "Product ID",
+  //     sort: true,
+  //   },
+  //   {
+  //     dataField: "name",
+  //     text: "Product Name",
+  //     sort: true,
+  //   },
+  //   {
+  //     dataField: "price",
+  //     text: "Product Price",
+  //     sort: true,
+  //   },
+  // ];
+
+  // const defaultSorted = [
+  //   {
+  //     dataField: "name",
+  //     order: "desc",
+  //   },
+  // ];
   return (
     <Layout sidebar>
       <Container>
@@ -235,14 +329,25 @@ const Products = (props) => {
           <Col md={12}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h3>Products</h3>
-              <CButton color="success" onClick={handleShow}><IoIosCreate/> Create</CButton>
-              {/* <button onClick={handleShow}>Add</button> */}
             </div>
           </Col>
         </Row>
         <Row>
-          <Col>{renderProducts()}</Col>
+          <CButton color="success" onClick={handleShow}>
+            <IoIosCreate /> Create
+          </CButton>
         </Row>
+        {/* <Row>
+          <BootstrapTable
+            bootstrap4
+            keyField="_id"
+            data={test}
+            columns={columns}
+            defaultSorted={defaultSorted}
+          />
+          <p></p>
+        </Row> */}
+        <Row><Col>{renderProducts()}</Col></Row>
       </Container>
       {renderAddProductModal()}
       {renderProductDetailsModal()}

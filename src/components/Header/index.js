@@ -8,8 +8,8 @@ import {
   Form,
 } from "react-bootstrap";
 import {CButton} from "@coreui/react"
-import { NavLink, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import {  useDispatch } from "react-redux";
 import { signout } from "../../actions";
 
 /**
@@ -18,7 +18,6 @@ import { signout } from "../../actions";
  **/
 
 const Header = (props) => {
-  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const logout = () => {

@@ -30,7 +30,6 @@ function App() {
       dispatch(getInitialData());
     }
     
-
   }, [auth.authenticate]);
 
   return (
