@@ -6,7 +6,7 @@
     "price": 12.45,
     "discount": 10,
     "offerEnd": "October 5, 2020 12:11:00",
-    "new": false,
+    "new": true,
     "rating": 4,
     "saleCount": 54,
     "category": ["fashion", "men"],

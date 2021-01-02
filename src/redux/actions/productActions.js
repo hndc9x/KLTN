@@ -11,3 +11,4 @@ export const fetchProducts = products => {
     dispatch(fetchProductsSuccess(products));
   };
 };
+

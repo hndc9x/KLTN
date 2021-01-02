@@ -9,11 +9,24 @@ import App from "./App";
 import "./assets/scss/style.scss";
 import * as serviceWorker from "./serviceWorker";
 import store from './store';
+import axios from "./helpers/axios";
 
 window.store = store;
 
+// const getProduct = () => {
+
+// }
+axios.post(`/product/getProducts`).then((response) => {
+  store.dispatch(fetchProducts(response.data));
+  console.log(response.data);
+},(error) => {
+  console.log(error);
+});
+
 // fetch products from json file
-store.dispatch(fetchProducts(products));
+//store.dispatch(fetchProducts(products));
+
+
 
 ReactDOM.render(
   <Provider store={store}>
