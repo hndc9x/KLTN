@@ -7,11 +7,13 @@ import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
+import StripeCheckoutButton from "../../components/stripe/stripe.button";
 
 const Checkout = ({ location, cartItems, currency }) => {
   const { pathname } = location;
   let cartTotalPrice = 0;
 
+  const totalPrice = 58; 
   return (
     <Fragment>
       <MetaTags>
@@ -199,6 +201,7 @@ const Checkout = ({ location, cartItems, currency }) => {
                     </div>
                     <div className="place-order mt-25">
                       <button className="btn-hover">Place Order</button>
+                      <StripeCheckoutButton price={totalPrice} />
                     </div>
                   </div>
                 </div>

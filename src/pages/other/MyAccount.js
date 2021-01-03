@@ -7,6 +7,7 @@ import Accordion from "react-bootstrap/Accordion";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import {  useSelector } from "react-redux";
+import "./style.css";
 
 const MyAccount = ({ location }) => {
   const { pathname } = location;

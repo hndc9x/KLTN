@@ -13,9 +13,7 @@ import axios from "./helpers/axios";
 
 window.store = store;
 
-// const getProduct = () => {
 
-// }
 axios.post(`/product/getProducts`).then((response) => {
   store.dispatch(fetchProducts(response.data));
   console.log(response.data);
