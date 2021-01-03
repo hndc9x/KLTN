@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../../components/Layout";
-import { Container, Row, Col, Table } from "react-bootstrap";
+import { Container, Row, Col, Table, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProductById } from "../../actions";
 import "./style.css";
@@ -21,8 +21,9 @@ import {
   CInput,
   CInvalidFeedback,
   CValidFeedback,
+  CRow,
 } from "@coreui/react";
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 /**
  * @author
@@ -35,28 +36,39 @@ const Products = (props) => {
   const [productDetailModal, setProductDetailModal] = useState(false);
 
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [saleCount, setSaleCount] = useState("");
   const [price, setPrice] = useState("");
+  const [discount, setDiscount] = useState("");
+  const [tagg, setTag] = useState("");
+  const [stock, setStock] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [productPictures, setProductPictures] = useState([]);
+
   const [productDetails, setProductDetails] = useState(null);
+
   const category = useSelector((state) => state.category);
+  const tags = useSelector((state) => state.tags)
   const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
   const submitProductForm = () => {
     const form = new FormData();
     form.append("name", name);
-    form.append("quantity", quantity);
+    form.append("saleCount", saleCount);
     form.append("price", price);
-    form.append("description", description);
+    form.append("discount", discount);
+    form.append("tag", tagg);
+    form.append("stock", stock);
+    form.append("shortDescription", shortDescription);
+    form.append("fullDescription", description);
     form.append("category", categoryId);
 
+    console.log(productPictures);
     for (let pic of productPictures) {
       form.append("productPicture", pic);
     }
-
     dispatch(addProduct(form)).then(() => setAddProductModal(!addProductModal));
   };
   const handleShow = () => setAddProductModal(true);
@@ -66,6 +78,17 @@ const Products = (props) => {
       options.push({ value: category._id, name: category.name });
       if (category.children.length > 0) {
         createCategoryList(category.children, options);
+      }
+    }
+
+    return options;
+  };
+
+  const createTagList = (categories, options = []) => {
+    for (let category of categories) {
+      options.push({ value: category._id, name: category.name });
+      if (category.children.length > 0) {
+        createTagList(category.children, options);
       }
     }
 
@@ -83,9 +106,9 @@ const Products = (props) => {
           <tr>
             <th>Name</th>
             <th>Price</th>
+            <td>Sele Count</td>
             <th>Discount</th>
             <th>Category</th>
-            <th>Discount</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -95,11 +118,10 @@ const Products = (props) => {
                 <tr key={product._id}>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
+                  <td>{product.saleCount}</td>
                   <td>{product.discount}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.category.name}</td>
-                  
-                
+                  <td>{product.category}</td>
+
                   <td>
                     <CButton
                       color="info"
@@ -139,11 +161,128 @@ const Products = (props) => {
         <CModalBody>
           <h3>Enter Fill Information</h3>
           <CForm className="was-validated">
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                  <CInput
+                    placeholder="Product Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                  <CInput
+                    placeholder="Sale Count"
+                    value={saleCount}
+                    onChange={(e) => setSaleCount(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                  <CInput
+                    placeholder="Price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                  <CInput
+                    placeholder="Discount"
+                    value={discount}
+                    onChange={(e) => setDiscount(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                  <CInput
+                    placeholder="Tag"
+                    value={tagg}
+                    onChange={(e) => setTag(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                  <CInput
+                    placeholder="Stock"
+                    value={stock}
+                    onChange={(e) => setStock(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+
             <CFormGroup>
-              <CInput
-                placeholder="Product Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+            <Form.Control
+                as="textarea"
+                rows={3}
+                placeholder="Short Description"
+                value={shortDescription}
+                onChange={(e) => setShortDescription(e.target.value)}
                 className="form-control-warning"
                 id="inputWarning2i"
                 required
@@ -156,39 +295,9 @@ const Products = (props) => {
               </CValidFeedback>
             </CFormGroup>
             <CFormGroup>
-              <CInput
-                placeholder="Quantity"
-                value={quantity}
-                onChange={(e) => setQuantity(e.target.value)}
-                className="form-control-warning"
-                id="inputWarning2i"
-                required
-              />
-              <CInvalidFeedback className="help-block">
-                Please provide a valid information
-              </CInvalidFeedback>
-              <CValidFeedback className="help-block">
-                Input provided
-              </CValidFeedback>
-            </CFormGroup>
-            <CFormGroup>
-              <CInput
-                placeholder="Price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="form-control-warning"
-                id="inputWarning2i"
-                required
-              />
-              <CInvalidFeedback className="help-block">
-                Please provide a valid information
-              </CInvalidFeedback>
-              <CValidFeedback className="help-block">
-                Input provided
-              </CValidFeedback>
-            </CFormGroup>
-            <CFormGroup>
-              <CInput
+              <Form.Control
+                as="textarea"
+                rows={10}
                 placeholder="Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -212,7 +321,7 @@ const Products = (props) => {
             >
               <option>Select Category</option>
               {createCategoryList(category.categories).map((option) => (
-                <option key={option.value} value={option.value}>
+                <option key={option.value} value={option.name}>
                   {option.name}
                 </option>
               ))}
@@ -298,30 +407,7 @@ const Products = (props) => {
       </CModal>
     );
   };
-  // const columns = [
-  //   {
-  //     dataField: "_id",
-  //     text: "Product ID",
-  //     sort: true,
-  //   },
-  //   {
-  //     dataField: "name",
-  //     text: "Product Name",
-  //     sort: true,
-  //   },
-  //   {
-  //     dataField: "price",
-  //     text: "Product Price",
-  //     sort: true,
-  //   },
-  // ];
 
-  // const defaultSorted = [
-  //   {
-  //     dataField: "name",
-  //     order: "desc",
-  //   },
-  // ];
   return (
     <Layout sidebar>
       <Container>
@@ -337,17 +423,9 @@ const Products = (props) => {
             <IoIosCreate /> Create
           </CButton>
         </Row>
-        {/* <Row>
-          <BootstrapTable
-            bootstrap4
-            keyField="_id"
-            data={test}
-            columns={columns}
-            defaultSorted={defaultSorted}
-          />
-          <p></p>
-        </Row> */}
-        <Row><Col>{renderProducts()}</Col></Row>
+        <Row>
+          <Col>{renderProducts()}</Col>
+        </Row>
       </Container>
       {renderAddProductModal()}
       {renderProductDetailsModal()}

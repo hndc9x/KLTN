@@ -12,6 +12,7 @@ import Orders from './containers/Orders';
 import Category from './containers/Category';
 import NewPage from './containers/NewPage';
 import SendEmail from './containers/SendEmail';
+import Tag from './containers/Tag';
 
 
 
@@ -40,6 +41,7 @@ function App() {
         <PrivateRoute path="/category" component={Category} />
         <PrivateRoute path="/products" component={Products} />
         <PrivateRoute path="/orders" component={Orders} />
+        <PrivateRoute path="/tags" component={Tag} />
         <PrivateRoute path="/sendEmail" component={SendEmail} />
 
 
