@@ -39,12 +39,9 @@ const productSchema = new mongoose.Schema({
     },
     category:[
     ],
-    image: [
-       
-    ],
-    color :{
-        type:String,
-    },
+    tag:[],
+    image: [],
+    
     stock:{
         type: String
     },

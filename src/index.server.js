@@ -18,7 +18,7 @@ const addressRoutes = require("./routes/address");
 const orderRoutes = require("./routes/order");
 const adminOrderRoute = require("./routes/admin/order.routes");
 const adminSendEmail = require("./routes/admin/email");
-
+const tagRoutes = require("./routes/tag");
 // cài đặt môi trường env
 env.config();
 
@@ -64,6 +64,7 @@ app.use("/api", addressRoutes);
 app.use("/api", orderRoutes);
 app.use("/api", adminOrderRoute);
 app.use("/api", adminSendEmail);
+app.use("/api",tagRoutes);
 
 
 app.listen(process.env.PORT,()=>{

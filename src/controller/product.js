@@ -4,7 +4,7 @@ const slugify = require("slugify");
 const Category = require("../models/category");
 
 exports.createProduct = (req, res) => {
-  const { sku ,name, price, discount , offerEnd , saleCount ,category, shortDescription ,fullDescription , stock ,color } = req.body;
+  const { sku ,name, price, discount , offerEnd , saleCount ,category, shortDescription ,fullDescription , stock ,tag } = req.body;
   let image = [];
   if (req.files.length > 0) {
     image = req.files.map((file) => {
@@ -26,7 +26,7 @@ exports.createProduct = (req, res) => {
     fullDescription,
     image,
     stock,
-    color,
+    tag,
     createdBy: req.user._id
   });
 
@@ -120,7 +120,7 @@ exports.deleteProductById = (req, res) => {
 
 exports.getProducts = async (req, res) => {
   const products = await Product.find({})
-    .select("id sku name slug price discount offerEnd newProduct saleCount category shortDescription fullDescription image stock color")
+    .select("id sku name slug price discount offerEnd newProduct saleCount category shortDescription fullDescription image stock tag ")
     // .populate({ path: "category", select: "_id name" })
     .exec();
 

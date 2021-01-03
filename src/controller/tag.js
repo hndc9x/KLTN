@@ -1,49 +1,41 @@
 const Category = require("../models/category");
+const Tag = require("../models/tag");
 const slugify = require("slugify");
 const shortid = require("shortid");
 
-function createCategories(categories, parentId = null) {
-  const categoryList = [];
-  let category;
-  if (parentId == null) {
-    category = categories.filter((cat) => cat.parentId == undefined);
-  } else {
-    category = categories.filter((cat) => cat.parentId == parentId);
-  }
+// function createTag(tagl) {
+//   const categoryList = [];
+//   let category;
+//   if (parentId == null) {
+//     category = categories.filter((cat) => cat.parentId == undefined);
+//   } else {
+//     category = categories.filter((cat) => cat.parentId == parentId);
+//   }
 
-  for (let cate of category) {
-    categoryList.push({
-      _id: cate._id,
-      name: cate.name,
-      slug: cate.slug,
-      parentId: cate.parentId,
-      type: cate.type,
-      children: createCategories(categories, cate._id),
-    });
-  }
+//   for (let cate of category) {
+//     categoryList.push({
+//       _id: cate._id,
+//       name: cate.name,
+//       slug: cate.slug,
+//       parentId: cate.parentId,
+//       type: cate.type,
+//       children: createCategories(categories, cate._id),
+//     });
+//   }
 
-  return categoryList;
-}
+//   return categoryList;
+// }
 
-exports.addCategory = (req, res) => {
-  const categoryObj = {
-    name: req.body.name,
-    slug: slugify(req.body.name),
-  };
+exports.addTag = (req, res) => {
 
-  if (req.file) {
-    categoryObj.categoryImage = "/public/" + req.file.filename;
-  }
-
-  if (req.body.parentId) {
-    categoryObj.parentId = req.body.parentId;
-  }
-
-  const cat = new Category(categoryObj);
-  cat.save((error, category) => {
+  const tag = new Tag({
+      name : req.body.name,
+      slug : slugify(req.body.name)
+  });
+  tag.save((error, tag) => {
     if (error) return res.status(400).json({ error });
-    if (category) {
-      return res.status(201).json({ category });
+    if (tag) {
+      return res.status(201).json({ tag });
     }
   });
 };
