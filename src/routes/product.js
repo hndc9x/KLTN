@@ -2,10 +2,10 @@ const express = require("express");
 const { requireSignin, adminMiddleware } = require("../common-middleware");
 const {
   createProduct,
-  getProductsBySlug,
   getProductDetailsById,
   deleteProductById,
   getProducts,
+  updateProducts,
 } = require("../controller/product");
 const multer = require("multer");
 const router = express.Router();
@@ -30,7 +30,7 @@ router.post(
   upload.array("productPicture"),
   createProduct
 );
-router.get("/products/:slug", getProductsBySlug);
+//router.get("/products/:slug", getProductsBySlug);
 //router.get('/category/getcategory', getCategories);
 router.get("/product/:productId", getProductDetailsById);
 router.delete(
@@ -39,6 +39,7 @@ router.delete(
   adminMiddleware,
   deleteProductById
 );
+router.post('/product/update', updateProducts);
 router.post(
   "/product/getProducts", getProducts
 );
