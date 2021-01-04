@@ -4,7 +4,6 @@ import { Container, Row, Col, Table, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProductById, updateProduct } from "../../actions";
 import "./style.css";
-import { generatePublicUrl } from "../../urlConfig";
 import { IoIosTrash, IoIosCreate, IoIosEye, IoMdCreate } from "react-icons/io";
 import {
   CButton,
@@ -51,7 +50,7 @@ const Products = (props) => {
   var _id = "";
   var nameU = "";
   var priceU = "";
-  var discountU = "";
+  var [discountU ,setDiscountU] = useState("");
   var tagU ="";
   var [stockU, setStockU] = useState("");
   
@@ -223,6 +222,7 @@ const Products = (props) => {
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
                   />
                   <CInvalidFeedback className="help-block">
                     Please provide a valid information
@@ -243,6 +243,7 @@ const Products = (props) => {
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
                   />
                   <CInvalidFeedback className="help-block">
                     Please provide a valid information
@@ -261,6 +262,7 @@ const Products = (props) => {
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
                   />
                   <CInvalidFeedback className="help-block">
                     Please provide a valid information
@@ -299,6 +301,7 @@ const Products = (props) => {
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
                   />
                   <CInvalidFeedback className="help-block">
                     Please provide a valid information
@@ -404,7 +407,7 @@ const Products = (props) => {
     _id = productDetails._id;
     nameU = productDetails.name;
     priceU = productDetails.price;
-    discountU = productDetails.discount;
+    //discountU = productDetails.discount;
     tagU = productDetails.tag;
     
     return (
@@ -454,11 +457,11 @@ const Products = (props) => {
                 </CFormGroup>
               </CCol>
               <CCol>
-                <CFormGroup>
-                <label>Discount</label>
+                 <CFormGroup>
+                <label>Tag</label>
                   <CInput
-                    placeholder="Discount"
-                    value={productDetails.discount}
+                    placeholder="Tag"
+                    value={productDetails.tag}
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
@@ -475,13 +478,24 @@ const Products = (props) => {
             <CRow>
               <CCol>
                 <CFormGroup>
-                <label>Tag</label>
+                <label>Discount</label>
                   <CInput
-                    placeholder="Tag"
-                    value={productDetails.tag}
+                    placeholder="Discount"
+                    value={productDetails.discount}
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
+                  />
+                  <p></p>
+                  <CInput
+                    placeholder="Discount"
+                    value={discountU}
+                    onChange = {(e) => setDiscountU(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                    type="number"
                   />
                   <CInvalidFeedback className="help-block">
                     Please provide a valid information
@@ -500,6 +514,7 @@ const Products = (props) => {
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
                   />
                   <p></p>
                   <CInput
@@ -509,6 +524,7 @@ const Products = (props) => {
                     className="form-control-warning"
                     id="inputWarning2i"
                     required
+                    type="number"
                   />
                   <CInvalidFeedback className="help-block">
                     Please provide a valid information

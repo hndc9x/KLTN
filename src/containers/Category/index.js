@@ -67,11 +67,6 @@ const Category = (props) => {
   const [expandedArray, setExpandedArray] = useState([]);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   if (!category.loading) {
-  //     setShow(false);
-  //   }
-  // }, [category.loading]);
 
   const handleClose = () => {
     const form = new FormData();
@@ -239,30 +234,6 @@ const Category = (props) => {
               </CValidFeedback>
             </CFormGroup>
           </CForm>
-          <select
-            className="form-control form-control-sm"
-            value={parentCategoryId}
-            onChange={(e) => setParentCategoryId(e.target.value)}
-          >
-            <option>Select category</option>
-            {categoryList.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.name}
-              </option>
-            ))}
-          </select>
-          <p></p>
-          <CCol xs="12" md="9">
-            <CInputFile
-              custom
-              id="custom-file-input"
-              name="categoryImage"
-              onChange={handleCategoryImage}
-            />
-            <CLabel htmlFor="custom-file-input" variant="custom-file">
-              Choose file...
-            </CLabel>
-          </CCol>
         </CModalBody>
         <CModalFooter>
           <CButton
