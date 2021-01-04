@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Layout from "../../components/Layout";
 import { Container, Row, Col, Table, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { addProduct, deleteProductById } from "../../actions";
+import { addProduct, deleteProductById, updateProduct } from "../../actions";
 import "./style.css";
 import { generatePublicUrl } from "../../urlConfig";
-import { IoIosTrash, IoIosCreate, IoIosEye } from "react-icons/io";
+import { IoIosTrash, IoIosCreate, IoIosEye, IoMdCreate } from "react-icons/io";
 import {
   CButton,
   CForm,
@@ -32,8 +32,9 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 const Products = (props) => {
   //modal
-  const [addProductModal, setAddProductModal] = useState("");
+  const [addProductModal, setAddProductModal] = useState(false);
   const [productDetailModal, setProductDetailModal] = useState(false);
+  const [productUpdateModal, setProductUpdateModal] = useState(false);
 
   const [name, setName] = useState("");
   const [saleCount, setSaleCount] = useState("");
@@ -46,10 +47,20 @@ const Products = (props) => {
   const [categoryId, setCategoryId] = useState("");
   const [productPictures, setProductPictures] = useState([]);
 
+  // update 
+  var _id = "";
+  var nameU = "";
+  var priceU = "";
+  var discountU = "";
+  var tagU ="";
+  var [stockU, setStockU] = useState("");
+  
+
   const [productDetails, setProductDetails] = useState(null);
+  const [_productUpdate, setProductUpdate] = useState(null);
 
   const category = useSelector((state) => state.category);
-  const tags = useSelector((state) => state.tags)
+  const tags = useSelector((state) => state.tags);
   const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -71,6 +82,23 @@ const Products = (props) => {
     }
     dispatch(addProduct(form)).then(() => setAddProductModal(!addProductModal));
   };
+
+  const updateProductForm = () => {
+   
+    setProductUpdate(product);
+    console.log(_productUpdate);
+      const form = {
+        _id : _id ,
+        name : nameU,
+        price : priceU ,
+        discount :discountU ,
+        tag : tagU ,
+        stock :stockU
+      };
+      console.log(form);
+      dispatch(updateProduct(form)).then(() => setProductUpdateModal(!productUpdateModal));
+    
+  }
   const handleShow = () => setAddProductModal(true);
 
   const createCategoryList = (categories, options = []) => {
@@ -106,7 +134,7 @@ const Products = (props) => {
           <tr>
             <th>Name</th>
             <th>Price</th>
-            <td>Sele Count</td>
+            <th>Stock</th>
             <th>Discount</th>
             <th>Category</th>
             <th>Actions</th>
@@ -118,7 +146,7 @@ const Products = (props) => {
                 <tr key={product._id}>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
-                  <td>{product.saleCount}</td>
+                  <td>{product.stock}</td>
                   <td>{product.discount}</td>
                   <td>{product.category}</td>
 
@@ -139,6 +167,12 @@ const Products = (props) => {
                       }}
                     >
                       <IoIosTrash />
+                    </CButton>
+                    <CButton
+                      color="primary"
+                      onClick={() => showUpdateProductsModal(product)}
+                    >
+                      <IoMdCreate />
                     </CButton>
                   </td>
                 </tr>
@@ -277,7 +311,7 @@ const Products = (props) => {
             </CRow>
 
             <CFormGroup>
-            <Form.Control
+              <Form.Control
                 as="textarea"
                 rows={3}
                 placeholder="Short Description"
@@ -360,14 +394,161 @@ const Products = (props) => {
       </CModal>
     );
   };
+
+  const renderUpdateProductModal = () => {
+    if (!productDetails) {
+      return null;
+    } else {
+      console.log(productDetails);
+    }
+    _id = productDetails._id;
+    nameU = productDetails.name;
+    priceU = productDetails.price;
+    discountU = productDetails.discount;
+    tagU = productDetails.tag;
+    
+    return (
+      <CModal
+        show={productUpdateModal}
+        onClose={() => setProductUpdateModal(!productUpdateModal)}
+      >
+        <CModalHeader className="modal-header-edit" closeButton>
+          <CModalTitle>Update Product</CModalTitle>
+        </CModalHeader>
+        <CModalBody>
+          <h3>Enter Fill Information</h3>
+          <CForm className="was-validated">
+              <CFormGroup>
+                <label>Name</label>
+                <CInput
+                  placeholder="Product Name"
+                  value={productDetails.name}
+                  className="form-control-warning"
+                  id="inputWarning2i"
+                  required
+                />
+                <CInvalidFeedback className="help-block">
+                  Please provide a valid information
+                </CInvalidFeedback>
+                <CValidFeedback className="help-block">
+                  Input provided
+                </CValidFeedback>
+              </CFormGroup>
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                <label>Price</label>
+                  <CInput
+                    placeholder="Price"
+                    value={productDetails.price}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                <label>Discount</label>
+                  <CInput
+                    placeholder="Discount"
+                    value={productDetails.discount}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+            <CRow>
+              <CCol>
+                <CFormGroup>
+                <label>Tag</label>
+                  <CInput
+                    placeholder="Tag"
+                    value={productDetails.tag}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+              <CCol>
+                <CFormGroup>
+                <label>Stock</label>
+                  <CInput
+                    placeholder="Stock"
+                    value={productDetails.stock}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <p></p>
+                  <CInput
+                    placeholder="Stock"
+                    value={stockU}
+                    onChange={(e) => setStockU(e.target.value)}
+                    className="form-control-warning"
+                    id="inputWarning2i"
+                    required
+                  />
+                  <CInvalidFeedback className="help-block">
+                    Please provide a valid information
+                  </CInvalidFeedback>
+                  <CValidFeedback className="help-block">
+                    Input provided
+                  </CValidFeedback>
+                </CFormGroup>
+              </CCol>
+            </CRow>
+          </CForm>
+        </CModalBody>
+        <CModalFooter>
+          <CButton
+            color="secondary"
+            onClick={() => setProductUpdateModal(!productUpdateModal)}
+          >
+            Cancel
+          </CButton>
+          <CButton color="success" onClick={updateProductForm}>
+            OK
+          </CButton>{" "}
+        </CModalFooter>
+      </CModal>
+    );
+  };
+
   const showProductDetailsModal = (product) => {
     setProductDetails(product);
     setProductDetailModal(true);
+  };
+  const showUpdateProductsModal = (product) => {
+    setProductDetails(product);
+    setProductUpdateModal(true);
   };
   const renderProductDetailsModal = () => {
     if (!productDetails) {
       return null;
     }
+
     return (
       <CModal
         show={productDetailModal}
@@ -379,18 +560,37 @@ const Products = (props) => {
         <CModalBody>
           <label className="key">Name</label>
           <p className="value">{productDetails.name}</p>
-          <label className="key">Price</label>
-          <p className="value">{productDetails.price}</p>
-          <label className="key">Quantity</label>
-          <p className="value">{productDetails.quantity}</p>
-          <label className="key">Category</label>
-          <p className="value">{productDetails.category.name}</p>
+          <Row>
+            <Col>
+              <label className="key">Price</label>
+              <p className="value">{productDetails.price}</p>
+            </Col>
+            <Col>
+              <label className="key">Stock</label>
+              <p className="value">{productDetails.stock}</p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <label className="key">Category</label>
+              <p className="value">{productDetails.category}</p>
+            </Col>
+            <Col>
+              <label className="key">Tag</label>
+              <p className="value">{productDetails.tag}</p>
+            </Col>
+          </Row>
+          <label className="key">Short Description</label>
+          <p className="value">{productDetails.shortDescription}</p>
+          <label className="key">Description</label>
+          <p className="value">{productDetails.fullDescription}</p>
           <label className="key">Product Pictures</label>
           <Row>
             <Col style={{ display: `flex` }}>
-              {productDetails.productPictures.map((picture) => (
+              {productDetails.image.map((picture) => (
                 <div className="productImgContainer">
-                  <img src={generatePublicUrl(picture.img)} />
+                  <img src={picture} />
+                  &emsp;
                 </div>
               ))}
             </Col>
@@ -424,11 +624,15 @@ const Products = (props) => {
           </CButton>
         </Row>
         <Row>
+          <p></p>
+        </Row>
+        <Row>
           <Col>{renderProducts()}</Col>
         </Row>
       </Container>
       {renderAddProductModal()}
       {renderProductDetailsModal()}
+      {renderUpdateProductModal()}
     </Layout>
   );
 };

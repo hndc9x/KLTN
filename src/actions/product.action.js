@@ -43,6 +43,22 @@ export const addProduct = (form) => {
   };
 };
 
+export const updateProduct = (form) => {
+  return async dispatch => {
+      dispatch({ type: productConstants.UPDATE_PRODUCT_REQUEST });
+      const res = await axios.post(`/product/update`, form);
+      if (res.status === 201) {
+          dispatch({ type: productConstants.UPDATE_PRODUCT_SUCCESS });
+          dispatch(getProducts());
+      } else {
+          const { error } = res.data;
+          dispatch({
+              type: productConstants.UPDATE_PRODUCT_FAILURE,
+              payload: { error }
+          });
+      }
+  }
+}
 // new action
 export const deleteProductById = (payload) => {
   return async (dispatch) => {

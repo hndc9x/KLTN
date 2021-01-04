@@ -21,12 +21,12 @@ const Layout = (props) => {
             <Col md={2} className="sidebar">
               <ul>
                 <li><NavLink exact to={`/`}><IoIosHome />&ensp;Home</NavLink></li>
-                <li><NavLink to={`/page`}><IoIosDocument/>&ensp;Page</NavLink></li>
+                {/* <li><NavLink to={`/page`}><IoIosDocument/>&ensp;Page</NavLink></li> */}
                 <li><NavLink to={`/category`}><IoIosAlbums/>&ensp;Category</NavLink></li>
-                <li><NavLink to={`/tags`}><IoIosPricetags/>&ensp;Tags</NavLink></li>
+                {/* <li><NavLink to={`/tags`}><IoIosPricetags/>&ensp;Tags</NavLink></li> */}
                 <li><NavLink to={`/products`}><IoIosBriefcase/>&ensp;Products</NavLink></li>
-                <li><NavLink to={`/orders`}><IoIosApps/>&ensp;Orders</NavLink></li>
-                <li><NavLink to={`/sendEmail`}><IoMdMail/>&ensp;Email</NavLink></li>
+                {/* <li><NavLink to={`/orders`}><IoIosApps/>&ensp;Orders</NavLink></li>
+                <li><NavLink to={`/sendEmail`}><IoMdMail/>&ensp;Email</NavLink></li> */}
               </ul>
             </Col>
             <Col md={10} style={{ marginLeft: 'auto', paddingTop: '60px' }}>
