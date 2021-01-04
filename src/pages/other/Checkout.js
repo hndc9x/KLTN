@@ -201,7 +201,7 @@ const Checkout = ({ location, cartItems, currency }) => {
                     </div>
                     <div className="place-order mt-25">
                       <button className="btn-hover">Place Order</button>
-                      <StripeCheckoutButton price={totalPrice} />
+                      <StripeCheckoutButton price={cartTotalPrice.toFixed(2)} />
                     </div>
                   </div>
                 </div>
