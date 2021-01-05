@@ -1,23 +1,18 @@
 import axios from "../helpers/axios";
 import { orderConstants } from "./constants";
 
-export const getCustomerOrders = () => {
+const getOrder = () => {
   return async (dispatch) => {
-    dispatch({ type: orderConstants.GET_CUSTOMER_ORDER_REQUEST });
     try {
-      const res = await axios.post("/order/getCustomerOrders");
+      const res = await axios.post(`/getOrder`);
       if (res.status === 200) {
-        const { orders } = res.data;
+        const orders  = res.data;
         dispatch({
           type: orderConstants.GET_CUSTOMER_ORDER_SUCCESS,
           payload: { orders },
         });
       } else {
-        const { error } = res.data;
-        dispatch({
-          type: orderConstants.GET_CUSTOMER_ORDER_FAILURE,
-          payload: { error },
-        });
+        dispatch({ type: orderConstants.GET_CUSTOMER_ORDER_FAILURE });
       }
     } catch (error) {
       console.log(error);
@@ -25,23 +20,14 @@ export const getCustomerOrders = () => {
   };
 };
 
-export const updateOrder = (payload) => {
-  return async (dispatch) => {
-    dispatch({ type: orderConstants.UPDATE_CUSTOMER_ORDER_REQUEST });
-    try {
-      const res = await axios.post("/order/update", payload);
+export const updateOrder = (form) => {
+  return async dispatch => {
+      const res = await axios.post(`/updateOrder`, form);
       if (res.status === 201) {
-        dispatch({ type: orderConstants.UPDATE_CUSTOMER_ORDER_SUCCESS });
-        dispatch(getCustomerOrders());
+        dispatch(getOrder());
       } else {
-        const { error } = res.data;
-        dispatch({
-          type: orderConstants.UPDATE_CUSTOMER_ORDER_FAILURE,
-          payload: { error },
-        });
+          const { error } = res.data;
+          alert(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+  }
+}

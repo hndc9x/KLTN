@@ -26,8 +26,8 @@ const Layout = (props) => {
                 {/* <li><NavLink to={`/tags`}><IoIosPricetags/>&ensp;Tags</NavLink></li> */}
                 <li><NavLink to={`/products`}><IoIosBriefcase/>&ensp;Products</NavLink></li>
                 <li><NavLink to={`/warehouse`}><IoMdHome/>&ensp;WareHouse</NavLink></li>
-                {/* <li><NavLink to={`/orders`}><IoIosApps/>&ensp;Orders</NavLink></li>
-                <li><NavLink to={`/sendEmail`}><IoMdMail/>&ensp;Email</NavLink></li> */}
+                <li><NavLink to={`/orders`}><IoIosApps/>&ensp;Orders</NavLink></li>
+                {/* <li><NavLink to={`/sendEmail`}><IoMdMail/>&ensp;Email</NavLink></li> */}
               </ul>
             </Col>
             <Col md={10} style={{ marginLeft: 'auto', paddingTop: '60px' }}>

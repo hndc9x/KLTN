@@ -1,142 +1,264 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { updateOrder } from "../../actions";
 import Layout from "../../components/Layout";
-import Card from "../../components/UI/Card";
-
+import { Container, Row, Col, Form } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { ImportProducts, updateOrder } from "../../actions";
 import "./style.css";
+import {
+  CButton,
+  CDataTable,
+  CBadge,
+  CCollapse,
+  CCardBody,
+} from "@coreui/react";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 /**
  * @author
- * @function Orders
+ * @function Order
  **/
 
-const Orders = (props) => {
+const Order = (props) => {
+  const product = useSelector((state) => state.product);
   const order = useSelector((state) => state.order);
-  const [type, setType] = useState("");
+  const [details, setDetails] = useState([]);
+  // const [items, setItems] = useState(product.products);
+  const [stock, setStock] = useState("");
+  const [changeStatusPacked, setChangeStatusPacked] = useState(false);
+  const [changeStatusDelivering, setChangeStatusDelivering] = useState(false);
+  const [changeStatusCompleted, setChangeStatusCompleted] = useState(false);
+
   const dispatch = useDispatch();
 
-  const onOrderUpdate = (orderId) => {
-    const payload = {
-      orderId,
-      type,
-    };
-    dispatch(updateOrder(payload));
-  };
+  const ramdomId = () => {
+    return Math.random();
+  }
 
-  const formatDate = (date) => {
-    if (date) {
-      const d = new Date(date);
-      return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const UpdateOrder = (data) => {
+    console.log(data);
+    // console.log(data._id);
+    if (changeStatusDelivering === true && changeStatusCompleted === false && changeStatusPacked === false) {
+      const form = {
+        _id : data._id,
+        delivering: changeStatusDelivering,
+        isCompleted: changeStatusCompleted,
+        packed : changeStatusPacked,
+        status: "Delivering",
+      };
+      console.log(form);
+      dispatch(updateOrder(form));
+      setChangeStatusPacked(false);
+      setChangeStatusDelivering(false);
+      setChangeStatusCompleted(false);
+    }else if(changeStatusDelivering === false && changeStatusCompleted === false && changeStatusPacked === true){
+      const form = {
+        _id : data._id,
+        delivering: changeStatusDelivering,
+        isCompleted: changeStatusCompleted,
+        packed : changeStatusPacked,
+        status: "Packed",
+      };
+      console.log(form);
+      dispatch(updateOrder(form));
+      setChangeStatusPacked(false);
+      setChangeStatusDelivering(false);
+      setChangeStatusCompleted(false);
+    }else if(changeStatusDelivering === false && changeStatusCompleted === true && changeStatusPacked === false){
+      const form = {
+        _id : data._id,
+        delivering: changeStatusDelivering,
+        isCompleted: changeStatusCompleted,
+        packed : changeStatusPacked,
+        status: "Completed",
+      };
+      console.log(form);
+      dispatch(updateOrder(form));
+      setChangeStatusPacked(false);
+      setChangeStatusDelivering(false);
+      setChangeStatusCompleted(false);
+    }else {
+      alert("Only one Status");
+      setChangeStatusPacked(false);
+      setChangeStatusDelivering(false);
+      setChangeStatusCompleted(false);
     }
-    return "";
+  };
+  const ImportProduct = (data) => {
+    console.log(data);
+    console.log(stock);
+    console.log(data.stock);
+    const totalStock = data.stock + Number(stock);
+    console.log(totalStock);
+    const form = {
+      _id: data._id,
+      sold: data.sold,
+      stock: totalStock,
+    };
+    console.log(form);
+    dispatch(ImportProducts(form));
   };
 
+  const toggleDetails = (index) => {
+    const position = details.indexOf(index);
+    let newDetails = details.slice();
+    if (position !== -1) {
+      newDetails.splice(position, 1);
+    } else {
+      newDetails = [...details, index];
+    }
+    setDetails(newDetails);
+  };
+
+  const fields = [
+    { key: "nameUser", _style: { width: "25%" } },
+    "email",
+    "total",
+    "phone",
+    "status",
+    "note",
+    "date",
+    // { key: 'role', _style: { width: '20%'} },
+    // { key: 'status', _style: { width: '20%'} },
+    {
+      key: "show_details",
+      label: "",
+      _style: { width: "1%" },
+      sorter: false,
+      filter: false,
+    },
+  ];
+
+  const getBadge = (status) => {
+    switch (status) {
+      case "Active":
+        return "success";
+      case "Inactive":
+        return "secondary";
+      case "Pending":
+        return "warning";
+      case "Banned":
+        return "danger";
+      default:
+        return "primary";
+    }
+  };
+
+  const RenderTableProduct = () => {
+    return (
+      <CDataTable
+        items={order.orders}
+        fields={fields}
+        columnFilter
+        tableFilter
+        footer
+        itemsPerPageSelect
+        itemsPerPage={5}
+        hover
+        sorter
+        pagination
+        scopedSlots={{
+          status: (item) => (
+            <td>
+              <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
+            </td>
+          ),
+          show_details: (item, index) => {
+            return (
+              <td className="py-2">
+                <CButton
+                  color="primary"
+                  variant="outline"
+                  shape="square"
+                  size="sm"
+                  onClick={() => {
+                    toggleDetails(index);
+                  }}
+                >
+                  {details.includes(index) ? "Hide" : "Show"}
+                </CButton>
+              </td>
+            );
+          },
+          details: (item, index) => {
+            return (
+              <CCollapse show={details.includes(index)}>
+                <CCardBody>
+                  <h4>{item.username}</h4>
+                  <p className="text-muted">
+                    Change Status : {item.registered}
+                  </p>
+                  <Form>
+                    <Form.Check
+                      type="switch"
+                      id={ramdomId()}
+                      label="Packed"
+                      value={changeStatusPacked}
+                      onChange={(e) => setChangeStatusPacked(e.target.checked)}
+                    />
+                  </Form>
+                  <Form>
+                    <Form.Check
+                      type="switch"
+                      id={ramdomId()}
+                      label="Delivering"
+                      value={changeStatusDelivering}
+                      onChange={(e) =>
+                        setChangeStatusDelivering(e.target.checked)
+                      }
+                    />
+                  </Form>
+                  <Form>
+                    <Form.Check
+                      type="switch"
+                      id={ramdomId()}
+                      label="Completed"
+                      value={changeStatusCompleted}
+                      onChange={(e) =>
+                        setChangeStatusCompleted(e.target.checked)
+                      }
+                    />
+                  </Form>
+                  <CButton
+                    onClick={() => UpdateOrder(item)}
+                    size="sm"
+                    color="info"
+                  >
+                    Accept
+                  </CButton>
+                  <CButton
+                    onClick={() => {
+                      toggleDetails(index);
+                    }}
+                    size="sm"
+                    color="danger"
+                    className="ml-1"
+                  >
+                    Cancel
+                  </CButton>
+                </CCardBody>
+              </CCollapse>
+            );
+          },
+        }}
+      />
+    );
+  };
   return (
     <Layout sidebar>
-      {order.orders.map((orderItem, index) => (
-        <Card
-          style={{
-            margin: "10px 0",
-          }}
-          key={index}
-          headerLeft={orderItem._id}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              padding: "50px 50px",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <div className="title">Items</div>
-              {orderItem.items.map((item, index) => (
-                <div className="value" key={index}>
-                  {item.productId.name}
-                </div>
-              ))}
+      <Container>
+        <Row>
+          <Col md={12}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <h3>Order</h3>
             </div>
-            <div>
-              <span className="title">Total Price</span>
-              <br />
-              <span className="value">{orderItem.totalAmount}</span>
-            </div>
-            <div>
-              <span className="title">Payment Type</span> <br />
-              <span className="value">{orderItem.paymentType}</span>
-            </div>
-            <div>
-              <span className="title">Payment Status</span> <br />
-              <span className="value">{orderItem.paymentStatus}</span>
-            </div>
-          </div>
-          <div
-            style={{
-              boxSizing: "border-box",
-              padding: "100px",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
-            <div className="orderTrack">
-              {orderItem.orderStatus.map((status) => (
-                <div
-                  className={`orderStatus ${
-                    status.isCompleted ? "active" : ""
-                  }`}
-                >
-                  <div
-                    className={`point ${status.isCompleted ? "active" : ""}`}
-                  ></div>
-                  <div className="orderInfo">
-                    <div className="status">{status.type}</div>
-                    <div className="date">{formatDate(status.date)}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* select input to apply order action */}
-            <div
-              style={{
-                padding: "0 50px",
-                boxSizing: "border-box",
-              }}
-            >
-              <select onChange={(e) => setType(e.target.value)}>
-                <option value={""}>select status</option>
-                {orderItem.orderStatus.map((status) => {
-                  return (
-                    <>
-                      {!status.isCompleted ? (
-                        <option key={status.type} value={status.type}>
-                          {status.type}
-                        </option>
-                      ) : null}
-                    </>
-                  );
-                })}
-              </select>
-            </div>
-            {/* button to confirm action */}
-
-            <div
-              style={{
-                padding: "0 50px",
-                boxSizing: "border-box",
-              }}
-            >
-              <button onClick={() => onOrderUpdate(orderItem._id)}>
-                confirm
-              </button>
-            </div>
-          </div>
-        </Card>
-      ))}
+          </Col>
+        </Row>
+        <Row>
+          <Col>{RenderTableProduct()}</Col>
+        </Row>
+      </Container>
     </Layout>
   );
 };
 
-export default Orders;
+export default Order;

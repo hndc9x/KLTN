@@ -6,7 +6,7 @@ const getProducts = () => {
   return async (dispatch) => {
     try {
       dispatch({ type: productConstants.GET_ALL_PRODUCTS_REQUEST });
-      const res = await axios.post(`product/getProducts`);
+      const res = await axios.post(`getOrder`);
       if (res.status === 200) {
         const products  = res.data;
         //console.log(res.data);

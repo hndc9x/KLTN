@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Layout from "../../components/Layout";
-import { Container, Row, Col, Table, Form } from "react-bootstrap";
+import { Container, Row, Col} from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { ImportProducts } from "../../actions";
 import "./style.css";
