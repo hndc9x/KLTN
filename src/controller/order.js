@@ -21,36 +21,30 @@ exports.addOrder = (req, res) => {
   });
 }
 
-// exports.getOrders = (req, res) => {
-//   Order.find({ user: req.user._id })
-//     .select("_id paymentStatus paymentType orderStatus items")
-//     .populate("items.productId", "_id name productPictures")
-//     .exec((error, orders) => {
-//       if (error) return res.status(400).json({ error });
-//       if (orders) {
-//         res.status(200).json({ orders });
-//       }
-//     });
-// };
+exports.updateOrder = async (req, res) => {
+  const {  delivering , isCompleted , status , packed } = req.body;
+  const updateOrders = [];
+  const order = {
+    delivering : delivering,
+    isCompleted : isCompleted,
+    packed : packed,
+    status : status
+  };
 
-// exports.getOrder = (req, res) => {
-//   Order.findOne({ _id: req.body.orderId })
-//     .populate("items.productId", "_id name productPictures")
-//     .lean()
-//     .exec((error, order) => {
-//       if (error) return res.status(400).json({ error });
-//       if (order) {
-//         Address.findOne({
-//           user: req.user._id,
-//         }).exec((error, address) => {
-//           if (error) return res.status(400).json({ error });
-//           order.address = address.address.find(
-//             (adr) => adr._id.toString() == order.addressId.toString()
-//           );
-//           res.status(200).json({
-//             order,
-//           });
-//         });
-//       }
-//     });
-// };
+  const updateOrder = await Order.findOneAndUpdate(
+    { _id: req.body._id },
+    order,
+    { new: true }
+  );
+  updateOrders.push(updateOrder);
+  return res.status(201).json({ updateOrder: updateOrders });
+};
+
+exports.getOrder = async (req, res) => {
+  const order = await Order.find({})
+    .select("_id user total status shipping phone note nameUser isCompleted email delivering date , packed")
+    // .populate({ path: "category", select: "_id name" })
+    .exec();
+
+  res.status(200).json(order);
+};

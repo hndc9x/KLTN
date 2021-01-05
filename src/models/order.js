@@ -32,7 +32,11 @@ const orderSchema = new mongoose.Schema(
     },
     status : {
       type : String,
-      default : "Packing"
+      default : "Not Accept"
+    },
+    packed : {
+      type : Boolean,
+      default : false
     },
     delivering : {
       type : Boolean,
