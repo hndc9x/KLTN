@@ -28,7 +28,7 @@ function createCategories(categories, parentId = null) {
 exports.initialData = async (req, res) => {
   const categories = await Category.find({}).exec();
   const products = await Product.find({})
-    .select("_id id sku name slug price discount offerEnd newProduct saleCount category shortDescription fullDescription image stock tag ")
+    .select("_id id sku name slug price discount offerEnd newProduct saleCount category shortDescription fullDescription image stock tag sold ")
     // .populate({ path: "category", select: "_id name" })
     .exec();
   const orders = await Order.find({})
