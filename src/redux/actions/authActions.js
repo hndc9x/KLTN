@@ -13,6 +13,7 @@ export const signup = (user) => {
         const { token, user } = res.data;
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(user));
+        alert("Signup Successfully");
         dispatch({
           type: authConstants.LOGIN_SUCCESS,
           payload: {
@@ -22,10 +23,12 @@ export const signup = (user) => {
         });
       } else {
         const { error } = res.data;
+        alert("Signup Fail");
         dispatch({ type: authConstants.SIGNUP_FAILURE, payload: { error } });
       }
     } catch (error) {
       const { data } = error.response;
+      alert("Signup Fail");
       dispatch({
         type: authConstants.SIGNUP_FAILURE,
         payload: { error: data.error },
@@ -77,6 +80,7 @@ export const login = (user) => {
       const { token, user } = res.data;
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+      alert("Login Successfully");
       dispatch({
         type: authConstants.LOGIN_SUCCESS,
         payload: {
@@ -86,6 +90,7 @@ export const login = (user) => {
       });
     } else {
       if (res.status === 400) {
+        alert("Login Fail");
         dispatch({
           type: authConstants.LOGIN_FAILURE,
           payload: { error: res.data.error },

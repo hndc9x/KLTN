@@ -1,3 +1,4 @@
+import axios from "../../helpers/axios";
 export const FETCH_PRODUCTS_SUCCESS = "FETCH_PRODUCTS_SUCCESS";
 
 const fetchProductsSuccess = products => ({
@@ -11,4 +12,3 @@ export const fetchProducts = products => {
     dispatch(fetchProductsSuccess(products));
   };
 };
-

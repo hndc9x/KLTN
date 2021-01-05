@@ -1,23 +1,101 @@
 import PropTypes from "prop-types";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
 import MetaTags from "react-meta-tags";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { getDiscountPrice } from "../../helpers/product";
 import LayoutOne from "../../layouts/LayoutOne";
 import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import StripeCheckoutButton from "../../components/stripe/stripe.button";
+import axios from "../../helpers/axios";
+import { addOrder } from "../../redux/actions/orderAction";
+import {deleteAllFromCart,} from "../../redux/actions/cartActions";
 
 const Checkout = ({ location, cartItems, currency }) => {
+  // reduce
+  const auth = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.cartData);
+  //dispatch
+  const dispatch = useDispatch();
   const { pathname } = location;
   let cartTotalPrice = 0;
 
-  const totalPrice = 58; 
+  var [firstName, setFirstName] = useState("");
+  var [lastName, setLastName] = useState("");
+  var [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [contry, setContry] = useState("");
+  const [orderNote, setOrderNote] = useState("");
+
+  //funce
+  if (auth.authenticate) {
+    firstName = auth.user.firstName;
+    lastName = auth.user.lastName;
+    email = auth.user.email;
+  }
+  const importProduct = (data) =>{
+    axios.post(`/product/import`, data);
+  }
+  const onClickForm = () => {
+    if (
+      firstName === "" ||
+      lastName === "" ||
+      email === "" ||
+      address === "" ||
+      phone === "" ||
+      orderNote === "" ||
+      contry === ""
+    ) {
+      alert("Fields cannot be left blank !!");
+      return;
+    }
+    const user = auth.user._id;
+    const nameUser = firstName + " " + lastName;
+    const Address = address + " " + contry;
+    const total = cartTotalPrice;
+    const form = {
+      user,
+      email,
+      total,
+      nameUser,
+      address: Address,
+      phone,
+      note: orderNote,
+    };
+    const item = [];
+    for (let carts of cart){
+        item.push({
+          "_id" : carts._id,
+          "sold" : carts.quantity,
+          "stock" : carts.stock - carts.quantity
+        });
+        
+    }
+    for (let index of item ){
+      axios.post(`/product/import`, index);
+      importProduct(index);
+    }
+
+   console.log(item);
+
+
+    // const formU = {
+    //     _id : cart[0]._id
+    // }
+    // console.log(formU);
+   //console.log(form);
+    dispatch(deleteAllFromCart());
+    //alert("Place Order Successfully");
+    //dispatch(addOrder(form));
+    //dispatch(updateProduct(form));
+  };
+
   return (
     <Fragment>
       <MetaTags>
-        <title>Flone | Checkout</title>
+        <title>Hello | Checkout</title>
         <meta
           name="description"
           content="Checkout page of flone react minimalist eCommerce template."
@@ -41,76 +119,63 @@ const Checkout = ({ location, cartItems, currency }) => {
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>First Name</label>
-                          <input type="text" />
+                          <input
+                            type="text"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Last Name</label>
-                          <input type="text" />
+                          <input
+                            type="text"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="col-lg-12">
                         <div className="billing-info mb-20">
-                          <label>Company Name</label>
-                          <input type="text" />
+                          <label>Address</label>
+                          <input
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="col-lg-12">
                         <div className="billing-select mb-20">
                           <label>Country</label>
-                          <select>
+                          <select onChange={(e) => setContry(e.target.value)}>
                             <option>Select a country</option>
-                            <option>Azerbaijan</option>
-                            <option>Bahamas</option>
-                            <option>Bahrain</option>
-                            <option>Bangladesh</option>
-                            <option>Barbados</option>
+                            <option value="HCM">HCM</option>
+                            <option value="DN">Đà Nẳng</option>
+                            <option value="HB">Bình Dương</option>
+                            <option value="HN"> Hà Nội</option>
                           </select>
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="billing-info mb-20">
-                          <label>Street Address</label>
-                          <input
-                            className="billing-address"
-                            placeholder="House number and street name"
-                            type="text"
-                          />
-                          <input
-                            placeholder="Apartment, suite, unit etc."
-                            type="text"
-                          />
-                        </div>
-                      </div>
-                      <div className="col-lg-12">
-                        <div className="billing-info mb-20">
-                          <label>Town / City</label>
-                          <input type="text" />
-                        </div>
-                      </div>
-                      <div className="col-lg-6 col-md-6">
-                        <div className="billing-info mb-20">
-                          <label>State / County</label>
-                          <input type="text" />
-                        </div>
-                      </div>
-                      <div className="col-lg-6 col-md-6">
-                        <div className="billing-info mb-20">
-                          <label>Postcode / ZIP</label>
-                          <input type="text" />
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Phone</label>
-                          <input type="text" />
+                          <input
+                            type="number"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                          />
                         </div>
                       </div>
                       <div className="col-lg-6 col-md-6">
                         <div className="billing-info mb-20">
                           <label>Email Address</label>
-                          <input type="text" />
+                          <input
+                            type="text"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                          />
                         </div>
                       </div>
                     </div>
@@ -122,13 +187,13 @@ const Checkout = ({ location, cartItems, currency }) => {
                         <textarea
                           placeholder="Notes about your order, e.g. special notes for delivery. "
                           name="message"
-                          defaultValue={""}
+                          value={orderNote}
+                          onChange={(e) => setOrderNote(e.target.value)}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-
                 <div className="col-lg-5">
                   <div className="your-order-area">
                     <h3>Your order</h3>
@@ -200,7 +265,10 @@ const Checkout = ({ location, cartItems, currency }) => {
                       <div className="payment-method"></div>
                     </div>
                     <div className="place-order mt-25">
-                      <button className="btn-hover">Place Order</button>
+                      <button className="btn-hover" onClick={onClickForm}>
+                        Place Order
+                      </button>
+                      <p></p>
                       <StripeCheckoutButton price={cartTotalPrice.toFixed(2)} />
                     </div>
                   </div>
@@ -233,13 +301,13 @@ const Checkout = ({ location, cartItems, currency }) => {
 Checkout.propTypes = {
   cartItems: PropTypes.array,
   currency: PropTypes.object,
-  location: PropTypes.object
+  location: PropTypes.object,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     cartItems: state.cartData,
-    currency: state.currencyData
+    currency: state.currencyData,
   };
 };
 

@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { login, signup, signupG as _signupG } from "../../redux/actions";
 import GoogleLogin from "react-google-login";
 import "./style.css";
-import LinkedInPage from "../linked/index";
 
 const LoginRegister = ({ location }) => {
   const responseGoogle = (response) => {
@@ -128,7 +127,7 @@ const LoginRegister = ({ location }) => {
                                 cookiePolicy={"single_host_origin"}
                               />
                               <p></p>
-                              <LinkedInPage />
+                              {/* <LinkedInPage /> */}
                               {/* <FacebookLogin
                                 appId="150952263230241"
                                 autoLoad={true}

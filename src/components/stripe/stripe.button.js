@@ -1,5 +1,6 @@
 import React from 'react';
 import StripeCheckout from 'react-stripe-checkout';
+import axios from "../../helpers/axios";
 
 const StripeCheckoutButton = ({ price }) => {
     const priceForStripe = price * 100;
@@ -7,7 +8,17 @@ const StripeCheckoutButton = ({ price }) => {
 
     const onToken = token => {
         console.log(token);
+        const info = {
+           email : token.email,
+           id : token.id,
+           name : token.card.name,
+           address : token.card.address_line1,
+           card : token.object,
+           brand : token.card.brand
+        };
+        axios.post(`/endEmailPay`,info);
         alert('Payment Succesful!');
+
     };
 
     return (
