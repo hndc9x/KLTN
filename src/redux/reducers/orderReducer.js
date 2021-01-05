@@ -4,6 +4,7 @@ const initState = {
   order : null
 };
 
+
 export default (state = initState, action) => {
   switch (action.type) {
     case orderConstants.GET_USER_ORDER_REQUEST:

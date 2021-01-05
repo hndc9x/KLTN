@@ -80,15 +80,9 @@ const Checkout = ({ location, cartItems, currency }) => {
 
    console.log(item);
 
-
-    // const formU = {
-    //     _id : cart[0]._id
-    // }
-    // console.log(formU);
-   //console.log(form);
+    alert("Place Order Successfully");
+    dispatch(addOrder(form));
     dispatch(deleteAllFromCart());
-    //alert("Place Order Successfully");
-    //dispatch(addOrder(form));
     //dispatch(updateProduct(form));
   };
 
