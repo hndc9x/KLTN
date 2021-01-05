@@ -62,7 +62,7 @@ app.use('/api',initalDataRoutes);
 app.use('/api',pageRoutes);
 app.use("/api", addressRoutes);
 app.use("/api", orderRoutes);
-app.use("/api", adminOrderRoute);
+//app.use("/api", adminOrderRoute);
 app.use("/api", adminSendEmail);
 app.use("/api",tagRoutes);
 

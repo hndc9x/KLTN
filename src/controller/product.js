@@ -3,7 +3,7 @@ const shortid = require("shortid");
 const slugify = require("slugify");
 
 exports.createProduct = (req, res) => {
-  const { sku ,name, price, discount , offerEnd , saleCount ,category, shortDescription ,fullDescription , stock ,tag } = req.body;
+  const { sku ,name, price, discount , offerEnd , saleCount ,category, shortDescription ,fullDescription , stock ,tag ,sold} = req.body;
   let image = [];
   if (req.files.length > 0) {
     image = req.files.map((file) => {
@@ -26,6 +26,7 @@ exports.createProduct = (req, res) => {
     image,
     stock,
     tag,
+    sold,
     createdBy: req.user._id
   });
 
@@ -46,6 +47,23 @@ exports.updateProducts = async (req, res) => {
     price : price,
     discount : discount,
     tag : [tag]
+  };
+
+  const updateProduct = await Product.findOneAndUpdate(
+    { _id: req.body._id },
+    product,
+    { new: true }
+  );
+  updateProducts.push(updateProduct);
+  return res.status(201).json({ updateProduct: updateProducts });
+};
+
+exports.ImportProduct =  async (req, res) => {
+  const { stock , sold } = req.body;
+  const updateProducts = [];
+  const product = {
+    stock : stock,
+    sold : sold
   };
 
   const updateProduct = await Product.findOneAndUpdate(
@@ -89,7 +107,7 @@ exports.deleteProductById = (req, res) => {
 
 exports.getProducts = async (req, res) => {
   const products = await Product.find({})
-    .select("id sku name slug price discount offerEnd newProduct saleCount category shortDescription fullDescription image stock tag ")
+    .select("id sku name slug price discount offerEnd newProduct saleCount category shortDescription fullDescription image stock tag sold ")
     // .populate({ path: "category", select: "_id name" })
     .exec();
 

@@ -6,6 +6,7 @@ const {
   deleteProductById,
   getProducts,
   updateProducts,
+  ImportProduct,
 } = require("../controller/product");
 const multer = require("multer");
 const router = express.Router();
@@ -40,6 +41,7 @@ router.delete(
   deleteProductById
 );
 router.post('/product/update', updateProducts);
+router.post('/product/import', ImportProduct);
 router.post(
   "/product/getProducts", getProducts
 );
