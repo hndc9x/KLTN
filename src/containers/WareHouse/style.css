@@ -1,0 +1,55 @@
+.key{
+    font-size: 12px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+.value{
+    font-size: 14px;
+    font-family: sans-serif;
+}
+.productImgContainer{
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    text-align: center;
+}
+.productImgContainer img{
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.modal-header-success{
+    padding: 5px 15px;
+    background-color: #28a745;
+    height: 50px;
+    
+}
+.modal-header-edit{
+    padding: 5px 15px;
+    background-color: #007bff;
+    height: 50px;
+    
+}
+.modal-header-delete{
+    padding: 5px 15px;
+    background-color: #dc3545;
+    height: 50px; 
+}
+.modal-title{
+    font-size: 18px;
+    color: #fff;
+}
+.modal-footer{
+    padding: 5px 15px;
+}
+
+.actionBtnContainer{
+    display: flex;
+    align-items: center;
+}
+
+.actionBtnContainer > button{
+    border: 0;
+    margin: 0 5px;
+    font-size: 14px;
+}

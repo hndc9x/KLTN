@@ -24,6 +24,18 @@ const getProducts = () => {
   };
 };
 
+export const ImportProducts = (form) => {
+  return async (dispatch) => {
+    const res = await axios.post(`product/import`,form);
+    dispatch(getProducts());
+    if(res.status === 201){
+        alert("Import Successfully");
+    }else{
+      alert("Fail Successfully");
+    }
+  };
+}
+
 // modified actrion
 export const addProduct = (form) => {
   return async (dispatch) => {

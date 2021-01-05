@@ -3,7 +3,7 @@ import Header from '../Header';
 import { Container, Row, Col } from 'react-bootstrap'; 
 import { NavLink } from 'react-router-dom';
 import './style.css';
-import { IoIosHome  ,IoIosAlbums ,IoIosBriefcase ,IoIosDocument  ,IoIosApps ,IoMdMail ,IoIosPricetags} from "react-icons/io";
+import { IoIosHome  ,IoIosAlbums ,IoIosBriefcase , IoMdHome ,IoIosDocument  ,IoIosApps ,IoMdMail ,IoIosPricetags} from "react-icons/io";
 
 /**
 * @author
@@ -25,6 +25,7 @@ const Layout = (props) => {
                 <li><NavLink to={`/category`}><IoIosAlbums/>&ensp;Category</NavLink></li>
                 {/* <li><NavLink to={`/tags`}><IoIosPricetags/>&ensp;Tags</NavLink></li> */}
                 <li><NavLink to={`/products`}><IoIosBriefcase/>&ensp;Products</NavLink></li>
+                <li><NavLink to={`/warehouse`}><IoMdHome/>&ensp;WareHouse</NavLink></li>
                 {/* <li><NavLink to={`/orders`}><IoIosApps/>&ensp;Orders</NavLink></li>
                 <li><NavLink to={`/sendEmail`}><IoMdMail/>&ensp;Email</NavLink></li> */}
               </ul>
