@@ -10,6 +10,7 @@ import Breadcrumb from "../../wrappers/breadcrumb/Breadcrumb";
 import { useDispatch, useSelector } from "react-redux";
 import { login, signup, signupG as _signupG } from "../../redux/actions";
 import GoogleLogin from "react-google-login";
+import GitHubLogin from "react-github-login";
 import "./style.css";
 
 const LoginRegister = ({ location }) => {
@@ -33,6 +34,8 @@ const LoginRegister = ({ location }) => {
     dispatch(_signupG(userG));
   };
 
+  const onSuccess = (response) => console.log(response);
+  const onFailure = (response) => console.error(response);
 
   const { pathname } = location;
 
@@ -127,15 +130,18 @@ const LoginRegister = ({ location }) => {
                                 cookiePolicy={"single_host_origin"}
                               />
                               <p></p>
-                              {/* <LinkedInPage /> */}
-                              {/* <FacebookLogin
-                                appId="150952263230241"
-                                autoLoad={true}
-                                fields="name,email,picture"
-                                //onClick={componentClicked}
-                                callback={responseFacebook}
-                              /> */}
-                              ,
+                              {/* login with fb and github */}
+                              <GitHubLogin
+                                clientId="7bdf766990f8c397b80f"
+                                onSuccess={onSuccess}
+                                onFailure={onFailure}
+                              />
+                              <button className="github">
+                                Log In With Gitub
+                              </button>
+                              <button className="facebook">
+                                Log In With Facebook
+                              </button>
                               <div className="button-box">
                                 <div className="login-toggle-btn">
                                   <input type="checkbox" />

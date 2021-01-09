@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MetaTags from "react-meta-tags";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
 import { connect, useDispatch, useSelector } from "react-redux";
@@ -27,7 +27,20 @@ const Order = ({
       dispatch(getOrderLoading());
   });
 
-  
+  const auth = useSelector((state) => state.auth);
+  if (!auth.authenticate) {
+    alert("Sign in before ordering");
+    return <Redirect to={`/login-register`} />;
+  }
+  // var user = [];
+  // for (let orderUser of order.order){
+  //   if(orderUser.user == auth.user._id){
+  //     user.push({
+          
+  //     });
+  //   }
+  // }
+
   return (
     <Fragment>
       <MetaTags>
@@ -69,7 +82,7 @@ const Order = ({
                         <tbody>
                           {order.order.length > 0
                             ? order.order.map((orders) => (
-                                <tr key={orders.user}>
+                                <tr>
                                   <td>{orders.nameUser}</td>
                                   <td>{orders.email}</td>
                                   <td>{orders.phone}</td>

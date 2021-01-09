@@ -23,12 +23,12 @@ export const signup = (user) => {
         });
       } else {
         const { error } = res.data;
-        alert("Signup Fail");
+        alert("Signup Fail" + error);
         dispatch({ type: authConstants.SIGNUP_FAILURE, payload: { error } });
       }
     } catch (error) {
       const { data } = error.response;
-      alert("Signup Fail");
+      alert("Signup Fail" + data);
       dispatch({
         type: authConstants.SIGNUP_FAILURE,
         payload: { error: data.error },

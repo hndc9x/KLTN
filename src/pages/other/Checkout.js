@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MetaTags from "react-meta-tags";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { BreadcrumbsItem } from "react-breadcrumbs-dynamic";
@@ -16,6 +16,7 @@ const Checkout = ({ location, cartItems, currency }) => {
   // reduce
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cartData);
+  const product = useSelector((state) => state.productData);
   //dispatch
   const dispatch = useDispatch();
   const { pathname } = location;
@@ -29,11 +30,15 @@ const Checkout = ({ location, cartItems, currency }) => {
   const [contry, setContry] = useState("");
   const [orderNote, setOrderNote] = useState("");
 
+  console.log(product.products[0].sold);
   //funce
   if (auth.authenticate) {
     firstName = auth.user.firstName;
     lastName = auth.user.lastName;
     email = auth.user.email;
+  }else{
+    alert("Sign in before ordering");
+    return <Redirect to={`/login-register`} />;
   }
   const importProduct = (data) =>{
     axios.post(`/product/import`, data);
@@ -66,12 +71,13 @@ const Checkout = ({ location, cartItems, currency }) => {
     };
     const item = [];
     for (let carts of cart){
+   //   var index = 0;
         item.push({
           "_id" : carts._id,
-          "sold" : carts.quantity,
+          "sold" : carts.quantity  ,
           "stock" : carts.stock - carts.quantity
         });
-        
+     //   index++;
     }
     for (let index of item ){
       axios.post(`/product/import`, index);
@@ -79,11 +85,22 @@ const Checkout = ({ location, cartItems, currency }) => {
     }
 
    console.log(item);
+   const info = {
+    email,
+    orderid : user,
+    name : nameUser,
+    address : Address,
+    total : cartTotalPrice
+   };
+   
+   console.log(info);
 
-    alert("Place Order Successfully");
+    
     dispatch(addOrder(form));
     dispatch(deleteAllFromCart());
     //dispatch(updateProduct(form));
+    axios.post(`/endEmailOrder`,info);
+    alert("Place Order Successfully");
   };
 
   return (
