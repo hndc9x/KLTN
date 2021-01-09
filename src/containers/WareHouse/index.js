@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/Layout";
 import { Container, Row, Col} from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import { ImportProducts } from "../../actions";
+import { ImportProducts ,getProductsLoading } from "../../actions";
 import "./style.css";
 import {
   IoIosAddCircleOutline,
@@ -43,9 +43,9 @@ const WareHouse = (props) => {
     console.log(form);
     //console.log(data.stock);
     dispatch(ImportProducts(form));
+   
+    
   }
-
-
 
   const toggleDetails = (index) => {
     const position = details.indexOf(index);

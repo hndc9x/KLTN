@@ -127,19 +127,18 @@ const Order = (props) => {
       filter: false,
     },
   ];
-
   const getBadge = (status) => {
     switch (status) {
-      case "Active":
+      case "Completed":
         return "success";
-      case "Inactive":
-        return "secondary";
-      case "Pending":
+      case "Packed":
+        return "primary";
+      case "Delivering":
         return "warning";
       case "Banned":
         return "danger";
       default:
-        return "primary";
+        return "secondary";
     }
   };
 
