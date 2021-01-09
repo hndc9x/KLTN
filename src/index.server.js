@@ -6,6 +6,12 @@ const path = require('path');
 const cors = require('cors');
 
 
+// cài đặt môi trường env
+env.config();
+
+
+
+
 //route
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin/auth');
@@ -19,8 +25,8 @@ const orderRoutes = require("./routes/order");
 const adminOrderRoute = require("./routes/admin/order.routes");
 const adminSendEmail = require("./routes/admin/email");
 const tagRoutes = require("./routes/tag");
-// cài đặt môi trường env
-env.config();
+const { Console } = require('console');
+
 
 // kết nối mongodb
 // mongodb+srv://root:<password>@cluster0.e5qsb.mongodb.net/<dbname>?retryWrites=true&w=majority
