@@ -19,7 +19,6 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
  **/
 
 const Order = (props) => {
-  const product = useSelector((state) => state.product);
   const order = useSelector((state) => state.order);
   const [details, setDetails] = useState([]);
   // const [items, setItems] = useState(product.products);

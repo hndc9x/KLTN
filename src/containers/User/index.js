@@ -19,11 +19,14 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 
 /**
  * @author
- * @function WareHouse
+ * @function User
  **/
 
-const WareHouse = (props) => {
+const User = (props) => {
   const product = useSelector((state) => state.product);
+  const user = useSelector((state) => state.user);
+  
+  console.log(user.user);
   const [details, setDetails] = useState([]);
  // const [items, setItems] = useState(product.products);
   const [stock , setStock] = useState("");
@@ -59,9 +62,12 @@ const WareHouse = (props) => {
   };
 
   const fields = [
-    { key: "name", _style: { width: "60%" } },
-    "sold",
-    "stock",
+    { key: "firstName", _style: { width: "20%" } },
+    "lastName",
+    "email",
+    "username",
+    "role",
+    "updatedAt",
     // { key: 'role', _style: { width: '20%'} },
     // { key: 'status', _style: { width: '20%'} },
     {
@@ -91,7 +97,7 @@ const WareHouse = (props) => {
   const RenderTableProduct = () => {
     return (
       <CDataTable
-        items={product.products}
+        items={user.user}
         fields={fields}
         columnFilter
         tableFilter
@@ -179,4 +185,4 @@ const WareHouse = (props) => {
   );
 };
 
-export default WareHouse;
+export default User;

@@ -13,6 +13,7 @@ import NewPage from './containers/NewPage';
 import SendEmail from './containers/SendEmail';
 import Tag from './containers/Tag';
 import WareHouse from './containers/WareHouse';
+import TheUser from './containers/User';
 
 
 
@@ -44,6 +45,7 @@ function App() {
         <PrivateRoute path="/orders" component={Orders} />
         <PrivateRoute path="/tags" component={Tag} />
         <PrivateRoute path="/sendEmail" component={SendEmail} />
+        <PrivateRoute path="/user" component={TheUser} />
 
 
         <Route path="/signin" component={Signin} />
