@@ -67,6 +67,11 @@ const LoginRegister = ({ location }) => {
   };
 
   const userLogin = () => {
+    if(email === ""  ){
+      alert("Please input email")
+    }else if (password === ""){
+      alert("Please input password")
+    }
     dispatch(login({ email, password }));
   };
 
